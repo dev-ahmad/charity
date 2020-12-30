@@ -82,6 +82,12 @@ export default {
         .post(`http://203237d8713f.ngrok.io/user/login`, data)
         .then((response) => {
           this.$store.commit("setCurrnentUser", response.data);
+          this.$store.commit("isLoggedIn", true);
+          if (response.data.userType == "ORG") {
+            this.$router.push({ path: "/org" });
+          } else {
+            this.$router.push({ path: "/user" });
+          }
         });
     },
   },

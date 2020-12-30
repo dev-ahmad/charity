@@ -13,19 +13,19 @@
       <v-card width="800">
         <v-form ref="signUpForm">
           <v-card-text>
-            <h1>Address</h1>
+            <h1>User Data</h1>
             <v-row>
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
                   style="color:#0090D0;font-size:14px;font-weight:600;"
                 >
-                  Name
+                  First Name
                 </legend>
                 <v-text-field
-                  placeholder="Name"
+                  placeholder="First Name"
                   persistent-hint
-                  v-model="name"
+                  v-model="firstName"
                   solo
                 ></v-text-field>
               </v-col>
@@ -34,12 +34,12 @@
                   class="v-label mb-2 theme--light"
                   style="color:#0090D0;font-size:14px;font-weight:600;"
                 >
-                  Street
+                  Last Name
                 </legend>
                 <v-text-field
-                  placeholder="Street"
+                  placeholder="Last Name"
                   persistent-hint
-                  v-model="street"
+                  v-model="lastName"
                   solo
                 ></v-text-field>
               </v-col>
@@ -48,12 +48,12 @@
                   class="v-label mb-2 theme--light"
                   style="color:#0090D0;font-size:14px;font-weight:600;"
                 >
-                  House Number
+                  Phone Number
                 </legend>
                 <v-text-field
-                  placeholder="House Number"
+                  placeholder="+962xxxxxxxxx"
                   persistent-hint
-                  v-model="houseNumber"
+                  v-model="phoneNumber"
                   solo
                 ></v-text-field>
               </v-col>
@@ -64,12 +64,26 @@
                   class="v-label mb-2 theme--light"
                   style="color:#0090D0;font-size:14px;font-weight:600;"
                 >
-                  Region
+                  User Name
                 </legend>
                 <v-text-field
-                  placeholder="Region"
+                  placeholder="User Name"
                   persistent-hint
-                  v-model="region"
+                  v-model="username"
+                  solo
+                ></v-text-field>
+              </v-col>
+              <v-col cols="8" sm="4" md="4">
+                <legend
+                  class="v-label mb-2 theme--light"
+                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                >
+                  Email
+                </legend>
+                <v-text-field
+                  placeholder="Email"
+                  persistent-hint
+                  v-model="email"
                   solo
                 ></v-text-field>
               </v-col>
@@ -89,62 +103,19 @@
                   solo
                 ></v-select>
               </v-col>
-              <v-col cols="8" sm="4" md="4">
-                <legend
-                  class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
-                >
-                  City
-                </legend>
-                <v-text-field
-                  placeholder="City"
-                  persistent-hint
-                  v-model="city"
-                  solo
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="8" sm="4" md="4">
-                <legend
-                  class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
-                >
-                  Phone
-                </legend>
-                <v-text-field
-                  placeholder="Phone"
-                  persistent-hint
-                  v-model="phone"
-                  solo
-                ></v-text-field>
-              </v-col>
-              <v-col cols="8" sm="4" md="4">
-                <legend
-                  class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
-                >
-                  Note
-                </legend>
-                <v-text-field
-                  placeholder="Note"
-                  persistent-hint
-                  v-model="note"
-                  solo
-                ></v-text-field>
-              </v-col>
             </v-row>
             <v-row>
               <v-col cols="10" sm="4" md="5"> </v-col>
               <v-col cols="10" sm="4" md="5"> </v-col>
-              <v-col cols="8" sm="4" md="2">
+
+              <v-col cols="4" sm="4" md="2">
                 <v-btn
                   outlined
                   depressed
                   large
                   color="#0090D0"
+                  @click="updateUser"
                   dark
-                  @click="updateAddresss"
                   :loading="updateLoading"
                   >update</v-btn
                 >
@@ -162,7 +133,6 @@ import axios from "axios";
 export default {
   data() {
     return {
-      updateLoading: false,
       userTypes: [
         {
           name: "USER",
@@ -175,27 +145,27 @@ export default {
       password: "",
       showPassword: false,
       loading: false,
-      name: "",
-      street: "",
-      houseNumber: "",
-      region: "",
+      updateLoading: false,
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      username: "",
       countries: [],
       countryId: null,
       userType: null,
-      phone: null,
-      note: null,
+      orgName: null,
+      orgDesc: null,
       orgLogo: null,
-      city: null,
     };
   },
   computed: {},
   watch: {},
   mounted() {
     this.getCountries();
-    this.getAddress();
+    this.getUser();
   },
   methods: {
-    getAddress() {
+    getUser() {
       this.loading = true;
 
       var user_id = this.$store.state.crrentUser.id;
@@ -204,17 +174,16 @@ export default {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
+
       axios
-        .get(`http://203237d8713f.ngrok.io/user/address`, config)
+        .get(`http://203237d8713f.ngrok.io/user/${user_id}`, config)
         .then((response) => {
-          this.name = response.data.name;
-          this.phone = response.data.name;
-          this.street = response.data.street;
-          this.houseNumber = response.data.houseNumber;
-          this.region = response.data.region;
-          this.city = response.data.city;
+          this.email = response.data.email;
+          this.firstName = response.data.firstName;
+          this.lastName = response.data.lastName;
           this.countryId = response.data.country;
-          this.note = response.data.note;
+          this.phoneNumber = response.data.phone;
+          this.username = response.data.username;
           this.loading = false;
         });
     },
@@ -224,32 +193,32 @@ export default {
         .then((response) => {
           this.countries = response.body;
         })
-        .finally(() => {});
+        .finally(() => {
+          this.loading = false;
+        });
     },
-    updateAddresss() {
+    updateUser() {
       this.updateLoading = true;
+      var user_id = this.$store.state.crrentUser.id;
+      var data = {
+        email: this.email,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        country: this.countryId,
+        phone: this.phoneNumber,
+        username: this.username,
+      };
       let config = {
         headers: {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
-      var data = {
-        name: this.name,
-        phone: this.phone,
-        street: this.street,
-        houseNumber: this.houseNumber,
-        region: this.region,
-        city: this.city,
-        country: this.countryId,
-        note: this.note,
-      };
-      this.$http
-        .post("http://203237d8713f.ngrok.io/user/address", data, config)
+
+      axios
+        .put(`http://203237d8713f.ngrok.io/user/${user_id}`, data, config)
         .then((response) => {
+          this.getUser();
           this.updateLoading = false;
-        })
-        .finally(() => {
-          this.loading = false;
         });
     },
   },

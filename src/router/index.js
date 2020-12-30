@@ -7,6 +7,7 @@ import Organization from "../views/Organization.vue";
 import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import User from "../views/UserType/index.vue";
+import Org from "../views/OrgType/index.vue";
 
 Vue.use(VueRouter);
 
@@ -45,6 +46,11 @@ const routes = [
     path: "/user",
     name: "User",
     component: User,
+  },
+  {
+    path: "/org",
+    name: "Org",
+    component: Org,
   },
   {
     path: "/about",

@@ -263,7 +263,13 @@ export default {
       this.$http
         .post("http://203237d8713f.ngrok.io/user/register", data)
         .then((response) => {
-          this.$store.commit("setCurrnentUser", true);
+          this.$store.commit("setCurrnentUser", response.data);
+          this.$store.commit("isLoggedIn", true);
+          if (response.data.userType == "ORG") {
+            this.$router.push({ path: "/org" });
+          } else {
+            this.$router.push({ path: "/user" });
+          }
         })
         .finally(() => {
           this.loading = false;

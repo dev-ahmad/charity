@@ -10,7 +10,7 @@
       class="ml-4 mr-4"
       style="margin-top: 100px;"
     >
-      <v-card width="800">
+      <v-card width="800" v-for="address in addresses" :key="address.id">
         <v-form ref="signUpForm">
           <v-card-text>
             <h1>Address</h1>
@@ -25,7 +25,7 @@
                 <v-text-field
                   placeholder="Name"
                   persistent-hint
-                  v-model="name"
+                  v-model="address.name"
                   solo
                 ></v-text-field>
               </v-col>
@@ -39,7 +39,7 @@
                 <v-text-field
                   placeholder="Street"
                   persistent-hint
-                  v-model="street"
+                  v-model="address.street"
                   solo
                 ></v-text-field>
               </v-col>
@@ -53,7 +53,7 @@
                 <v-text-field
                   placeholder="House Number"
                   persistent-hint
-                  v-model="houseNumber"
+                  v-model="address.houseNumber"
                   solo
                 ></v-text-field>
               </v-col>
@@ -69,7 +69,7 @@
                 <v-text-field
                   placeholder="Region"
                   persistent-hint
-                  v-model="region"
+                  v-model="address.region"
                   solo
                 ></v-text-field>
               </v-col>
@@ -81,7 +81,7 @@
                   Country
                 </legend>
                 <v-select
-                  v-model="countryId"
+                  v-model="address.country"
                   :items="countries"
                   item-text="name"
                   item-value="id"
@@ -99,7 +99,7 @@
                 <v-text-field
                   placeholder="City"
                   persistent-hint
-                  v-model="city"
+                  v-model="address.city"
                   solo
                 ></v-text-field>
               </v-col>
@@ -115,7 +115,7 @@
                 <v-text-field
                   placeholder="Phone"
                   persistent-hint
-                  v-model="phone"
+                  v-model="address.phone"
                   solo
                 ></v-text-field>
               </v-col>
@@ -129,7 +129,7 @@
                 <v-text-field
                   placeholder="Note"
                   persistent-hint
-                  v-model="note"
+                  v-model="address.note"
                   solo
                 ></v-text-field>
               </v-col>
@@ -186,6 +186,7 @@ export default {
       note: null,
       orgLogo: null,
       city: null,
+      addresses: [],
     };
   },
   computed: {},
@@ -205,16 +206,9 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/user/address`, config)
+        .get(`http://203237d8713f.ngrok.io/organization/address/all`, config)
         .then((response) => {
-          this.name = response.data.name;
-          this.phone = response.data.name;
-          this.street = response.data.street;
-          this.houseNumber = response.data.houseNumber;
-          this.region = response.data.region;
-          this.city = response.data.city;
-          this.countryId = response.data.country;
-          this.note = response.data.note;
+          this.addresses = response.data;
           this.loading = false;
         });
     },
