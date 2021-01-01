@@ -8,6 +8,7 @@ import Login from "../views/Login.vue";
 import SignUp from "../views/SignUp.vue";
 import User from "../views/UserType/index.vue";
 import Org from "../views/OrgType/index.vue";
+import Admin from "../views/AdminType/index.vue";
 
 Vue.use(VueRouter);
 
@@ -51,6 +52,11 @@ const routes = [
     path: "/org",
     name: "Org",
     component: Org,
+  },
+  {
+    path: "/admin",
+    name: "Admin",
+    component: Admin,
   },
   {
     path: "/about",

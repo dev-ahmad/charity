@@ -491,14 +491,16 @@ export default {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
-      var data = {
-        day: this.dropOff.day,
-        fromHour: this.dropOff.fromHour,
-        toHour: this.dropOff.toHour,
-        addressId: this.dropOff.addressId,
-      };
+      var data = [
+        {
+          day: this.dropOff.day,
+          fromHour: this.dropOff.fromHour,
+          toHour: this.dropOff.toHour,
+          addressId: this.dropOff.addressId,
+        },
+      ];
       this.$http
-        .put(
+        .post(
           `http://203237d8713f.ngrok.io/organization/dfl_slot/${org_id}/modify`,
           data,
           config

@@ -33,26 +33,20 @@ x<template>
         <v-tabs v-model="active_tab" slider-color="primary">
           <v-tab ripple>User Info</v-tab>
           <v-tab ripple>Addresses</v-tab>
-          <v-tab ripple>Organization Info</v-tab>
           <v-tab ripple>Donations</v-tab>
-          <v-tab ripple>Documents</v-tab>
         </v-tabs>
       </div>
       <v-divider></v-divider>
     </div>
     <user-info v-if="active_tab == 0"></user-info>
     <addresses v-if="active_tab == 1"></addresses>
-    <organization-info v-if="active_tab == 2"></organization-info>
-    <donations v-if="active_tab == 3"></donations>
-    <documents v-if="active_tab == 4"></documents>
+    <donations v-if="active_tab == 2"></donations>
   </div>
 </template>
 <script>
 import UserInfo from "./userInfo.vue";
 import Addresses from "./addresses.vue";
 import Donations from "./donations.vue";
-import OrganizationInfo from "./OrganizationInfo.vue";
-import Documents from "./documents.vue";
 
 export default {
   name: "University",
@@ -60,8 +54,6 @@ export default {
     UserInfo,
     Addresses,
     Donations,
-    OrganizationInfo,
-    Documents,
   },
   data() {
     return {

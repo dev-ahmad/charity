@@ -85,8 +85,12 @@ export default {
           this.$store.commit("setIsLoggedIn", true);
           if (response.data.userType == "ORG") {
             this.$router.push({ path: "/org" });
-          } else {
+          }
+          if (response.data.userType == "USER") {
             this.$router.push({ path: "/user" });
+          }
+          if (response.data.userType == "SUPER-ADMIN") {
+            this.$router.push({ path: "/admin" });
           }
         });
     },
