@@ -494,6 +494,7 @@ export default {
       this.$http
         .put(
           `http://203237d8713f.ngrok.io/organization/address/activate/${this.$store.state.crrentUser.orgId}/${address.id}`,
+          null,
           config
         )
         .then((response) => {
@@ -516,6 +517,7 @@ export default {
       this.$http
         .put(
           `http://203237d8713f.ngrok.io/organization/address/deactivate/${this.$store.state.crrentUser.orgId}/${address.id}`,
+          null,
           config
         )
         .then((response) => {
