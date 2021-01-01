@@ -48,41 +48,26 @@ export default {
           sortable: true,
         },
         {
-          text: "User Fist Name",
-          value: "user.firstName",
+          text: "User first name",
+          value: "firstName",
         },
         {
-          text: "User Last Name",
-          value: "user.lastName",
+          text: "User last name",
+          value: "lastName",
         },
         {
-          text: "Donation Type",
-          value: "donationType",
+          text: "Email",
+          value: "email",
           sortable: false,
         },
         {
-          text: "Delivery Type",
-          value: "deliveryType",
+          text: "Phone",
+          value: "phone",
           sortable: false,
         },
         {
-          text: "Payment Amount",
-          value: "paymentInfo.amount",
-          sortable: false,
-        },
-        {
-          text: "Street Address",
-          value: "pickupAddress.street",
-          sortable: false,
-        },
-        {
-          text: "House Number",
-          value: "pickupAddress.houseNumber",
-          sortable: false,
-        },
-        {
-          text: "Note",
-          value: "note",
+          text: "User Name",
+          value: "username",
           sortable: false,
         },
       ],
@@ -92,11 +77,10 @@ export default {
   computed: {},
   watch: {},
   mounted() {
-    this.getDonations();
+    this.getUsers();
   },
   methods: {
-    getDonations() {
-      var org_id = this.$store.state.crrentUser.orgId;
+    getUsers() {
       this.loading = true;
       var user_id = this.$store.state.crrentUser.id;
       let config = {
@@ -105,7 +89,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/donation/${org_id}/all`, config)
+        .get(`http://203237d8713f.ngrok.io/user/all`, config)
         .then((response) => {
           this.loading = false;
           this.donations = response.data;

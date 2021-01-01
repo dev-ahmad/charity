@@ -193,6 +193,40 @@
                   hide-details
                 ></v-switch>
               </v-col>
+              <v-col cols="8" sm="4" md="4"> </v-col>
+            </v-row>
+            <v-row style="margin: 20px;" v-if="offeringDropOffLocation">
+              <v-data-table
+                style="width: 100%;"
+                :headers="dropOffLocationSlotsHeaders"
+                :items="dropOffLocationSlots"
+                hide-default-footer
+                class="elevation-1"
+              >
+                <template v-slot:item.days="{ item }">
+                  {{ days.find((d) => d.id === item.day).name }}
+                </template>
+                <template v-slot:item.actions="{ item }">
+                  <v-btn depressed color="error" @click="deleteDropOff(item)">
+                    Delete
+                  </v-btn>
+                </template>
+              </v-data-table>
+              <v-card-actions
+                style="width: 100;"
+                class="d-flex justify-end mb-6"
+              >
+                <v-btn
+                  :loading="createLoading"
+                  color="blue darken-1"
+                  text
+                  @click="dropOffDialog = true"
+                >
+                  Create
+                </v-btn>
+              </v-card-actions>
+            </v-row>
+            <v-row>
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
@@ -208,14 +242,22 @@
               </v-col>
               <v-col cols="8" sm="4" md="4"> </v-col>
             </v-row>
-            <v-row style="margin: 20px;">
+            <v-row style="margin: 20px;" v-if="offeringPickup">
               <v-data-table
                 style="width: 100%;"
-                :headers="dropOffLocationSlotsHeaders"
-                :items="dropOffLocationSlots"
+                :headers="pickupSlotsHeaders"
+                :items="pickupSlots"
                 hide-default-footer
                 class="elevation-1"
               >
+                <template v-slot:item.days="{ item }">
+                  {{ days.find((d) => d.id === item.day).name }}
+                </template>
+                <template v-slot:item.actions="{ item }">
+                  <v-btn depressed color="error" @click="deletePickUp(item)">
+                    Delete
+                  </v-btn>
+                </template>
               </v-data-table>
               <v-card-actions
                 style="width: 100;"
@@ -225,7 +267,7 @@
                   :loading="createLoading"
                   color="blue darken-1"
                   text
-                  @click="dropOffDialog = true"
+                  @click="pickupDialog = true"
                 >
                   Create
                 </v-btn>
@@ -266,12 +308,14 @@
                 >
                   Day
                 </legend>
-                <v-text-field
-                  placeholder="Name"
-                  persistent-hint
-                  v-model="dropOff.day"
+                <v-select
+                  v-model="selectedDay"
+                  :items="days"
+                  item-text="name"
+                  item-value="id"
+                  label="Select"
                   solo
-                ></v-text-field>
+                ></v-select>
               </v-col>
               <v-col cols="8" sm="4" md="4">
                 <legend
@@ -281,7 +325,7 @@
                   From Hour
                 </legend>
                 <v-text-field
-                  placeholder="Street"
+                  placeholder="From Hour"
                   persistent-hint
                   v-model="dropOff.fromHour"
                   solo
@@ -295,7 +339,7 @@
                   To Hour
                 </legend>
                 <v-text-field
-                  placeholder="House Number"
+                  placeholder="To Hour"
                   persistent-hint
                   v-model="dropOff.toHour"
                   solo
@@ -308,14 +352,16 @@
                   class="v-label mb-2 theme--light"
                   style="font-size:14px;font-weight:600;"
                 >
-                  Address Id
+                  Address
                 </legend>
-                <v-text-field
-                  placeholder="Region"
-                  persistent-hint
-                  v-model="dropOff.addressId"
+                <v-select
+                  v-model="selectedAddress"
+                  :items="addresses"
+                  item-text="name"
+                  item-value="id"
+                  label="Select"
                   solo
-                ></v-text-field>
+                ></v-select>
               </v-col>
             </v-row>
           </v-card-text>
@@ -329,7 +375,78 @@
             :loading="createLoading"
             color="blue darken-1"
             text
-            @click="createDroppOffLocation"
+            @click="createDroppOffLocation(true)"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="pickupDialog" scrollable max-width="740px">
+      <v-card>
+        <v-card-title>Pickup</v-card-title>
+        <v-divider></v-divider>
+        <v-form ref="signUpForm">
+          <v-card-text>
+            <v-row>
+              <v-col cols="8" sm="4" md="4">
+                <legend
+                  class="v-label mb-2 theme--light"
+                  style="font-size:14px;font-weight:600;"
+                >
+                  Day
+                </legend>
+                <v-select
+                  v-model="selectedDay"
+                  :items="days"
+                  item-text="name"
+                  item-value="id"
+                  label="Select"
+                  solo
+                ></v-select>
+              </v-col>
+              <v-col cols="8" sm="4" md="4">
+                <legend
+                  class="v-label mb-2 theme--light"
+                  style="font-size:14px;font-weight:600;"
+                >
+                  From Hour
+                </legend>
+                <v-text-field
+                  placeholder="From Hour"
+                  persistent-hint
+                  v-model="dropOff.fromHour"
+                  solo
+                ></v-text-field>
+              </v-col>
+              <v-col cols="8" sm="4" md="4">
+                <legend
+                  class="v-label mb-2 theme--light"
+                  style="font-size:14px;font-weight:600;"
+                >
+                  To Hour
+                </legend>
+                <v-text-field
+                  placeholder="To Hour"
+                  persistent-hint
+                  v-model="dropOff.toHour"
+                  solo
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-form>
+        <v-divider></v-divider>
+        <v-card-actions class="d-flex justify-end mb-6">
+          <v-btn color="blue darken-1" text @click="pickupDialog = false">
+            Close
+          </v-btn>
+          <v-btn
+            :loading="createLoading"
+            color="blue darken-1"
+            text
+            @click="createPickup(true)"
           >
             Save
           </v-btn>
@@ -352,11 +469,11 @@ export default {
         toHour: null,
       },
       dropOffDialog: false,
-      dropOffLocationSlotsHeaders: [
+      pickupDialog: false,
+      pickupSlotsHeaders: [
         {
           text: "Day",
-          value: "day",
-          sortable: false,
+          value: "days",
         },
         {
           text: "From Hour",
@@ -367,8 +484,37 @@ export default {
           value: "toHour",
           sortable: false,
         },
+        {
+          text: "Action",
+          value: "actions",
+        },
+      ],
+      dropOffLocationSlotsHeaders: [
+        {
+          text: "Day",
+          value: "days",
+        },
+        {
+          text: "From Hour",
+          value: "fromHour",
+        },
+        {
+          text: "To Hour",
+          value: "toHour",
+          sortable: false,
+        },
+        {
+          text: "Address",
+          value: "address.name",
+          sortable: false,
+        },
+        {
+          text: "Action",
+          value: "actions",
+        },
       ],
       dropOffLocationSlots: [],
+      pickupSlots: [],
       updateLoading: false,
       userTypes: [
         {
@@ -400,6 +546,39 @@ export default {
       acceptMoney: false,
       offeringDropOffLocation: false,
       offeringPickup: false,
+      addresses: null,
+      selectedAddress: null,
+      selectedDay: null,
+      days: [
+        {
+          id: 1,
+          name: "Sunday",
+        },
+        {
+          id: 2,
+          name: "Monday",
+        },
+        {
+          id: 3,
+          name: "Tuesday",
+        },
+        {
+          id: 4,
+          name: "Wednesday",
+        },
+        {
+          id: 5,
+          name: "Thursday",
+        },
+        {
+          id: 6,
+          name: "Friday",
+        },
+        {
+          id: 7,
+          name: "Saturday",
+        },
+      ],
     };
   },
   computed: {},
@@ -407,8 +586,25 @@ export default {
   mounted() {
     this.getCountries();
     this.getOrgInfo();
+    this.getAddresses();
   },
   methods: {
+    getAddresses() {
+      this.loading = true;
+
+      var user_id = this.$store.state.crrentUser.id;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      axios
+        .get(`http://203237d8713f.ngrok.io/organization/address/active/all`, config)
+        .then((response) => {
+          this.addresses = response.data;
+          this.loading = false;
+        });
+    },
     getOrgInfo() {
       this.loading = true;
 
@@ -433,7 +629,9 @@ export default {
           this.offeringDropOffLocation = response.data.offeringDropOffLocation;
           this.offeringPickup = response.data.offeringPickup;
           this.dropOffLocationSlots = response.data.dropOffLocationSlots;
+          this.pickupSlots = response.data.pickupSlots;
           this.description = response.data.description;
+          this.note = response.data.note;
           this.loading = false;
         });
     },
@@ -462,6 +660,7 @@ export default {
         establishedDate: this.establishedDate,
         logo: this.logo,
         description: this.description,
+        note: this.note,
         acceptClothes: this.acceptClothes,
         acceptFood: this.acceptFood,
         acceptMoney: this.acceptMoney,
@@ -482,7 +681,7 @@ export default {
           this.loading = false;
         });
     },
-    createDroppOffLocation() {
+    createDroppOffLocation(update) {
       var org_id = this.$store.state.crrentUser.orgId;
 
       this.createLoading = true;
@@ -491,14 +690,18 @@ export default {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
-      var data = [
-        {
-          day: this.dropOff.day,
+
+      if (update) {
+        var new_value = {
+          day: this.selectedDay,
           fromHour: this.dropOff.fromHour,
           toHour: this.dropOff.toHour,
-          addressId: this.dropOff.addressId,
-        },
-      ];
+          addressId: this.selectedAddress,
+        };
+        this.dropOffLocationSlots.push(new_value);
+      }
+      var data = this.dropOffLocationSlots;
+
       this.$http
         .post(
           `http://203237d8713f.ngrok.io/organization/dfl_slot/${org_id}/modify`,
@@ -506,11 +709,60 @@ export default {
           config
         )
         .then((response) => {
+          this.getOrgInfo();
+          this.dropOffDialog = false;
           this.createLoading = false;
         })
         .finally(() => {
           this.createLoading = false;
         });
+    },
+    createPickup(update) {
+      var org_id = this.$store.state.crrentUser.orgId;
+
+      this.createLoading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+
+      if (update) {
+        var new_value = {
+          day: this.selectedDay,
+          fromHour: this.dropOff.fromHour,
+          toHour: this.dropOff.toHour,
+        };
+      }
+      this.pickupSlots.push(new_value);
+      var data = this.pickupSlots;
+
+      this.$http
+        .post(
+          `http://203237d8713f.ngrok.io/organization/pickup_slots/${org_id}/modify`,
+          data,
+          config
+        )
+        .then((response) => {
+          this.getOrgInfo();
+          this.pickupDialog = false;
+          this.createLoading = false;
+        })
+        .finally(() => {
+          this.createLoading = false;
+        });
+    },
+    deleteDropOff(item) {
+      this.dropOffLocationSlots = this.dropOffLocationSlots.filter((a) => {
+        return a.id != item.id;
+      });
+      this.createDroppOffLocation(false);
+    },
+    deletePickUp(item) {
+      this.pickupSlots = this.pickupSlots.filter((a) => {
+        return a.id != item.id;
+      });
+      this.createPickup(false);
     },
   },
 };

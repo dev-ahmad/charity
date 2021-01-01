@@ -89,7 +89,7 @@ export default {
           if (response.data.userType == "USER") {
             this.$router.push({ path: "/user" });
           }
-          if (response.data.userType == "SUPER-ADMIN") {
+          if (response.data.userType == "SUPER_ADMIN") {
             this.$router.push({ path: "/admin" });
           }
         });

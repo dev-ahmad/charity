@@ -48,6 +48,14 @@ export default {
           sortable: true,
         },
         {
+          text: "User first name",
+          value: "user.firstName",
+        },
+        {
+          text: "User last name",
+          value: "user.lastName",
+        },
+        {
           text: "Organization",
           value: "organization.name",
         },
@@ -100,7 +108,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/user/donation/all`, config)
+        .get(`http://203237d8713f.ngrok.io/donation/all`, config)
         .then((response) => {
           this.loading = false;
           this.donations = response.data;

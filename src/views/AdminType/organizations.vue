@@ -48,26 +48,25 @@ export default {
           sortable: true,
         },
         {
-          text: "User Fist Name",
-          value: "user.firstName",
+          text: "Name",
+          value: "name",
         },
         {
-          text: "User Last Name",
-          value: "user.lastName",
+          text: "Email",
+          value: "email",
         },
         {
-          text: "Donation Type",
-          value: "donationType",
-          sortable: false,
+          text: "Phone",
+          value: "phone",
         },
         {
-          text: "Delivery Type",
-          value: "deliveryType",
+          text: "Website",
+          value: "website",
           sortable: false,
         },
         {
           text: "Payment Amount",
-          value: "paymentInfo.amount",
+          value: "orgAdminInfo.amount",
           sortable: false,
         },
         {
@@ -96,7 +95,6 @@ export default {
   },
   methods: {
     getDonations() {
-      var org_id = this.$store.state.crrentUser.orgId;
       this.loading = true;
       var user_id = this.$store.state.crrentUser.id;
       let config = {
@@ -105,7 +103,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/donation/${org_id}/all`, config)
+        .get(`http://203237d8713f.ngrok.io/organization/all`, config)
         .then((response) => {
           this.loading = false;
           this.donations = response.data;
