@@ -1,14 +1,13 @@
 <template>
   <v-app>
     <div id="app">
-      <Header v-if="$store.state.isLoggedIn == false" />
+      <Header v-if="$store.getters.isLoggedIn == false" />
       <router-view />
-      <Footer v-if="$store.state.isLoggedIn == false" />
+      <Footer v-if="$store.getters.isLoggedIn == false" />
     </div>
   </v-app>
 </template>
 <script>
-// @ is an alias to /src
 import Header from "@/components/header.vue";
 import Footer from "@/components/footer.vue";
 
@@ -17,6 +16,9 @@ export default {
   components: {
     Header,
     Footer,
+  },
+  created() {
+    console.warn(this.$store.getters.isLoggedIn);
   },
 };
 </script>

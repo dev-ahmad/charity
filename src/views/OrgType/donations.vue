@@ -92,6 +92,7 @@ export default {
   },
   methods: {
     getDonations() {
+      var org_id = this.$store.state.crrentUser.orgId;
       this.loading = true;
       var user_id = this.$store.state.crrentUser.id;
       let config = {
@@ -100,7 +101,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/user/donation/all`, config)
+        .get(`http://203237d8713f.ngrok.io/donation/${org_id}/all`, config)
         .then((response) => {
           this.loading = false;
           this.donations = response.data;

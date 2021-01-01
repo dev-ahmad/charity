@@ -264,7 +264,7 @@ export default {
         .post("http://203237d8713f.ngrok.io/user/register", data)
         .then((response) => {
           this.$store.commit("setCurrnentUser", response.data);
-          this.$store.commit("isLoggedIn", true);
+          this.$store.commit("setIsLoggedIn", true);
           if (response.data.userType == "ORG") {
             this.$router.push({ path: "/org" });
           } else {

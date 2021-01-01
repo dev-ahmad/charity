@@ -18,7 +18,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   First Name
                 </legend>
@@ -32,7 +32,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Last Name
                 </legend>
@@ -46,7 +46,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Phone Number
                 </legend>
@@ -62,7 +62,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   User Name
                 </legend>
@@ -76,7 +76,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Email
                 </legend>
@@ -90,7 +90,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Country
                 </legend>

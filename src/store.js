@@ -3,7 +3,6 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 
-
 const debug = process.env.NODE_ENV !== "production";
 
 export default new Vuex.Store({
@@ -11,7 +10,10 @@ export default new Vuex.Store({
     crrentUser: null,
     isLoggedIn: false,
   },
-  getters: {},
+  getters: {
+    isLoggedIn: state => state.isLoggedIn,
+    crrentUser: state => state.crrentUser
+  },
   mutations: {
     setIsLoggedIn(state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn;

@@ -18,7 +18,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Name
                 </legend>
@@ -32,7 +32,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Street
                 </legend>
@@ -46,7 +46,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   House Number
                 </legend>
@@ -62,7 +62,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Region
                 </legend>
@@ -76,7 +76,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Country
                 </legend>
@@ -92,7 +92,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   City
                 </legend>
@@ -108,7 +108,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Phone
                 </legend>
@@ -122,7 +122,7 @@
               <v-col cols="8" sm="4" md="4">
                 <legend
                   class="v-label mb-2 theme--light"
-                  style="color:#0090D0;font-size:14px;font-weight:600;"
+                  style="font-size:14px;font-weight:600;"
                 >
                   Note
                 </legend>

@@ -1,5 +1,30 @@
 x<template>
   <div>
+    <v-menu
+      style="z-index: 999;"
+      rounded
+      offset-y
+      origin="center center"
+      transition="scale-transition"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          style="position: absolute; right: 20px; top: 20px; z-index: 99;"
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          Settings
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item @click="logout">
+          <v-list-item-title>Log out</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
     <div
       class="uk-card uk-card-small uk-position-z-index	"
       uk-sticky="offset: 64"
@@ -32,16 +57,14 @@ export default {
   },
   data() {
     return {
-      active_tab: 0
+      active_tab: 0,
     };
   },
   methods: {
-    getUniversity() {
-      // this.$http
-      //   .get(`universities/${this.university_id}`)
-      //   .then(response => {
-      //     this.university = response.body.university;
-      //   })
+    logout() {
+      this.$store.commit("setCurrnentUser", null);
+      this.$store.commit("setIsLoggedIn", false);
+      this.$router.push({ path: "/" });
     },
     goToPath(path) {
       this.$router.push(path);
