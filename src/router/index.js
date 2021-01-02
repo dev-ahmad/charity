@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Contact from "../views/Contact.vue";
+import Privacy from "../views/Privacy.vue";
 import Organizations from "../views/Organizations.vue";
 import Organization from "../views/Organization.vue";
 import Login from "../views/Login.vue";
@@ -32,6 +33,11 @@ const routes = [
     path: "/contact",
     name: "Contact",
     component: Contact,
+  },
+  {
+    path: "/privacy",
+    name: "Privacy",
+    component: Privacy,
   },
   {
     path: "/login",

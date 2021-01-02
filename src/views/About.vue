@@ -14,6 +14,7 @@
         between) access the tools, training, and support they need to make our
         world a better place.
       </p>
+      <h3 style="color:black;margin:40px;">{{ aboutUs }}</h3>
     </div>
     <div class="statistics-container">
       <div class="statistics-content">
@@ -32,21 +33,23 @@
 export default {
   data() {
     return {
-      items: [
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg",
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/sky.jpg",
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/bird.jpg",
-        },
-        {
-          src: "https://cdn.vuetifyjs.com/images/carousel/planet.jpg",
-        },
-      ],
+      aboutUs: ""
     };
+  },
+  mounted() {
+    this.getAboutUs();
+  },
+  methods: {
+    getAboutUs() {
+      this.$http
+        .get(`${this.$store.state.base_url}/page/ABOUT`)
+        .then((response) => {
+          this.aboutUs = response.data.content;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
   },
 };
 </script>

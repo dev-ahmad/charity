@@ -4,27 +4,27 @@
       class="contact-cont"
       style='background-image: url("https://www.globalgiving.org/img/banners/hero_aboutus_lg.jpg");'
     >
-      <h1>Contact Us</h1>
+      <h1>Privacy</h1>
     </div>
-    <h3 style="color:black;margin:40px;">{{ contactUs }}</h3>
+    <h3 style="color:black;margin:40px;">{{ privacy }}</h3>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      contactUs: "",
+      privacy: "",
     };
   },
   mounted() {
-    this.getContactUs();
+    this.getPrivacy();
   },
   methods: {
-    getContactUs() {
+    getPrivacy() {
       this.$http
-        .get(`${this.$store.state.base_url}/page/CONTACT`)
+        .get(`${this.$store.state.base_url}/page/PRIVACY`)
         .then((response) => {
-          this.contactUs = response.data.content;
+          this.privacy = response.data.content;
         })
         .finally(() => {
           this.loading = false;

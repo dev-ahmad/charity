@@ -122,8 +122,6 @@ export default {
     this.getOrganizations();
   },
   methods: {
-    goToLogin() {},
-    goToSignup() {},
     getHomePage() {
       this.$http
         .get(`${this.$store.state.base_url}/page/HOME_PAGE`)
