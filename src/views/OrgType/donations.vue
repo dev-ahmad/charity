@@ -120,8 +120,13 @@ export default {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
+      var data = {};
       axios
-        .put(`http://203237d8713f.ngrok.io/donation/${org_id}/${don.id}/received`, null, config)
+        .put(
+          `http://203237d8713f.ngrok.io/donation/${org_id}/${don.id}/received`,
+          data,
+          config
+        )
         .then((response) => {
           this.loading = false;
           this.getDonations();

@@ -58,18 +58,18 @@ import Countries from "./countries.vue";
 import Pages from "./pages.vue";
 
 export default {
-  name: "University",
+  name: "User",
   components: {
     UserInfo,
     Donations,
     Users,
     Organizations,
     Countries,
-    Pages
+    Pages,
   },
   data() {
     return {
-      active_tab: 3,
+      active_tab: 5,
     };
   },
   methods: {

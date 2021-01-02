@@ -49,7 +49,7 @@ import Addresses from "./addresses.vue";
 import Donations from "./donations.vue";
 
 export default {
-  name: "University",
+  name: "User",
   components: {
     UserInfo,
     Addresses,

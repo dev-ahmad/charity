@@ -55,7 +55,7 @@ import OrganizationInfo from "./OrganizationInfo.vue";
 import Documents from "./documents.vue";
 
 export default {
-  name: "University",
+  name: "User",
   components: {
     UserInfo,
     Addresses,
