@@ -408,7 +408,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/organization/address/all`, config)
+        .get(`${this.$store.state.base_url}/organization/address/all`, config)
         .then((response) => {
           this.addresses = response.data;
           this.loading = false;
@@ -416,7 +416,7 @@ export default {
     },
     getCountries() {
       this.$http
-        .get("http://203237d8713f.ngrok.io/country/all")
+        .get("${this.$store.state.base_url}/country/all")
         .then((response) => {
           this.countries = response.body;
         })
@@ -441,7 +441,7 @@ export default {
       };
       this.$http
         .put(
-          `http://203237d8713f.ngrok.io/organization/address/${this.$store.state.crrentUser.orgId}/${address.id}`,
+          `${this.$store.state.base_url}/organization/address/${this.$store.state.crrentUser.orgId}/${address.id}`,
           data,
           config
         )
@@ -473,7 +473,7 @@ export default {
       };
       this.createLoading = true;
       this.$http
-        .post("http://203237d8713f.ngrok.io/organization/address", data, config)
+        .post("${this.$store.state.base_url}/organization/address", data, config)
         .then((response) => {
           this.messageText = "Address created successfully";
           this.showMsg = true;
@@ -493,7 +493,7 @@ export default {
       };
       this.$http
         .put(
-          `http://203237d8713f.ngrok.io/organization/address/activate/${this.$store.state.crrentUser.orgId}/${address.id}`,
+          `${this.$store.state.base_url}/organization/address/activate/${this.$store.state.crrentUser.orgId}/${address.id}`,
           null,
           config
         )
@@ -516,7 +516,7 @@ export default {
       };
       this.$http
         .put(
-          `http://203237d8713f.ngrok.io/organization/address/deactivate/${this.$store.state.crrentUser.orgId}/${address.id}`,
+          `${this.$store.state.base_url}/organization/address/deactivate/${this.$store.state.crrentUser.orgId}/${address.id}`,
           null,
           config
         )

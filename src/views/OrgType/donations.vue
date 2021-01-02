@@ -106,7 +106,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/donation/${org_id}/all`, config)
+        .get(`${this.$store.state.base_url}/donation/${org_id}/all`, config)
         .then((response) => {
           this.loading = false;
           this.donations = response.data;
@@ -123,7 +123,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/donation/${org_id}/${don.id}/received`,
+          `${this.$store.state.base_url}/donation/${org_id}/${don.id}/received`,
           data,
           config
         )

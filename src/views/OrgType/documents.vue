@@ -158,7 +158,7 @@ export default {
       };
       axios
         .get(
-          `http://203237d8713f.ngrok.io/organization/document/${org_id}/all`,
+          `${this.$store.state.base_url}/organization/document/${org_id}/all`,
           config
         )
         .then((response) => {
@@ -185,7 +185,7 @@ export default {
       };
       axios
         .post(
-          `http://203237d8713f.ngrok.io/organization/document/${org_id}/add`, data,
+          `${this.$store.state.base_url}/organization/document/${org_id}/add`, data,
           config
         )
         .then((response) => {

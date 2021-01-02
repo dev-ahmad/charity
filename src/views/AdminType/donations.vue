@@ -107,7 +107,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/donation/all`, config)
+        .get(`${this.$store.state.base_url}/donation/all`, config)
         .then((response) => {
           this.loading = false;
           this.donations = response.data;

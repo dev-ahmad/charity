@@ -126,7 +126,7 @@ export default {
     goToSignup() {},
     getHomePage() {
       this.$http
-        .get("http://203237d8713f.ngrok.io/page/HOME_PAGE")
+        .get(`${this.$store.state.base_url}/page/HOME_PAGE`)
         .then((response) => {})
         .finally(() => {
           this.loading = false;
@@ -134,7 +134,7 @@ export default {
     },
     getOrganizations() {
       this.$http
-        .get("http://203237d8713f.ngrok.io/organization/home/all")
+        .get(`${this.$store.state.base_url}/organization/home/all`)
         .then((response) => {
           this.organizations = response.body;
         })

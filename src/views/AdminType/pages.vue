@@ -131,7 +131,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/page/all`, config)
+        .get(`${this.$store.state.base_url}/page/all`, config)
         .then((response) => {
           this.loading = false;
           this.countries = response.data;
@@ -155,7 +155,7 @@ export default {
       };
       axios
         .put(
-          `http://203237d8713f.ngrok.io/page/${this.selectedPage.path}`,
+          `${this.$store.state.base_url}/page/${this.selectedPage.path}`,
           data,
           config
         )

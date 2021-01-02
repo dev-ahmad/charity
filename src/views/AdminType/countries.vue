@@ -178,7 +178,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/country`, config)
+        .get(`${this.$store.state.base_url}/country`, config)
         .then((response) => {
           this.loading = false;
           this.countries = response.data;
@@ -194,7 +194,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/country/activate/${contry.id}`,
+          `${this.$store.state.base_url}/country/activate/${contry.id}`,
           data,
           config
         )
@@ -213,7 +213,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/country/deactivate/${contry.id}`,
+          `${this.$store.state.base_url}/country/deactivate/${contry.id}`,
           data,
           config
         )
@@ -234,7 +234,7 @@ export default {
         name: this.countryName,
       };
       axios
-        .post(`http://203237d8713f.ngrok.io/country/add`, data, config)
+        .post(`${this.$store.state.base_url}/country/add`, data, config)
         .then((response) => {
           this.createCountryLoading = false;
           this.createCountryDialog = false;
@@ -254,7 +254,7 @@ export default {
       };
       axios
         .put(
-          `http://203237d8713f.ngrok.io/country/${this.selectedCountry.id}`,
+          `${this.$store.state.base_url}/country/${this.selectedCountry.id}`,
           data,
           config
         )

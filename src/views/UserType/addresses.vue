@@ -205,7 +205,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/user/address`, config)
+        .get(`${this.$store.state.base_url}/user/address`, config)
         .then((response) => {
           this.name = response.data.name;
           this.phone = response.data.name;
@@ -220,7 +220,7 @@ export default {
     },
     getCountries() {
       this.$http
-        .get("http://203237d8713f.ngrok.io/country/all")
+        .get(`${this.$store.state.base_url}/country/all`)
         .then((response) => {
           this.countries = response.body;
         })
@@ -244,7 +244,7 @@ export default {
         note: this.note,
       };
       this.$http
-        .post("http://203237d8713f.ngrok.io/user/address", data, config)
+        .post("${this.$store.state.base_url}/user/address", data, config)
         .then((response) => {
           this.updateLoading = false;
         })

@@ -599,7 +599,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/organization/address/active/all`, config)
+        .get(`${this.$store.state.base_url}/organization/address/active/all`, config)
         .then((response) => {
           this.addresses = response.data;
           this.loading = false;
@@ -615,7 +615,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/organization/${org_id}`, config)
+        .get(`${this.$store.state.base_url}/organization/${org_id}`, config)
         .then((response) => {
           this.name = response.data.name;
           this.email = response.data.email;
@@ -637,7 +637,7 @@ export default {
     },
     getCountries() {
       this.$http
-        .get("http://203237d8713f.ngrok.io/country/all")
+        .get("${this.$store.state.base_url}/country/all")
         .then((response) => {
           this.countries = response.body;
         })
@@ -670,7 +670,7 @@ export default {
       };
       this.$http
         .put(
-          `http://203237d8713f.ngrok.io/organization/${org_id}`,
+          `${this.$store.state.base_url}/organization/${org_id}`,
           data,
           config
         )
@@ -704,7 +704,7 @@ export default {
 
       this.$http
         .post(
-          `http://203237d8713f.ngrok.io/organization/dfl_slot/${org_id}/modify`,
+          `${this.$store.state.base_url}/organization/dfl_slot/${org_id}/modify`,
           data,
           config
         )
@@ -739,7 +739,7 @@ export default {
 
       this.$http
         .post(
-          `http://203237d8713f.ngrok.io/organization/pickup_slots/${org_id}/modify`,
+          `${this.$store.state.base_url}/organization/pickup_slots/${org_id}/modify`,
           data,
           config
         )

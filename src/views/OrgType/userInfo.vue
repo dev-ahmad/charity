@@ -176,7 +176,7 @@ export default {
       };
 
       axios
-        .get(`http://203237d8713f.ngrok.io/user/${user_id}`, config)
+        .get(`${this.$store.state.base_url}/user/${user_id}`, config)
         .then((response) => {
           this.email = response.data.email;
           this.firstName = response.data.firstName;
@@ -189,7 +189,7 @@ export default {
     },
     getCountries() {
       this.$http
-        .get("http://203237d8713f.ngrok.io/country/all")
+        .get(`${this.$store.state.base_url}/country/all`)
         .then((response) => {
           this.countries = response.body;
         })
@@ -215,7 +215,7 @@ export default {
       };
 
       axios
-        .put(`http://203237d8713f.ngrok.io/user/${user_id}`, data, config)
+        .put(`${this.$store.state.base_url}/user/${user_id}`, data, config)
         .then((response) => {
           this.getUser();
           this.updateLoading = false;

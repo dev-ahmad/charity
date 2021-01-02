@@ -113,7 +113,7 @@
             class="align-end"
             color="blue darken-1"
             text
-            @click="donateDialog = true"
+            @click="checkIfLoggedIn"
           >
             Donate
           </v-btn>
@@ -121,6 +121,7 @@
       </v-card>
     </v-layout>
     <v-row align="center" class="org-container" no-gutters> </v-row>
+
     <v-dialog v-model="donateDialog" scrollable max-width="600px">
       <v-card>
         <v-card-title>Donate</v-card-title>
@@ -183,7 +184,9 @@
           <credit-card></credit-card>
         </v-card-text>
 
-        <v-card-text v-if="selectedDonate == 'food' || selectedDonate == 'clothes'">
+        <v-card-text
+          v-if="selectedDonate == 'food' || selectedDonate == 'clothes'"
+        >
           <legend
             class="v-label mb-2 theme--light"
             style="font-size:14px;font-weight:600;"
@@ -216,6 +219,78 @@
               mdi-truck-fast
             </v-icon>
           </v-btn>
+
+          <v-card-text v-if="deliveryType == 'offeringPickup'">
+            <legend
+              class="v-label mb-2 theme--light"
+              style="font-size:14px;font-weight:600;"
+            >
+              Day and Time
+            </legend>
+
+            <v-select
+              :items="organization.pickupSlots"
+              item-text="value"
+              item-value="id"
+              v-model="selectedPickupSlot"
+              label="Select"
+              solo
+            >
+              <template slot="selection" slot-scope="data">
+                {{ days.find((d) => d.id === data.item.day).name }} ... from:
+                {{ data.item.fromHour }} to : {{ data.item.toHour }}
+              </template>
+              <template slot="item" slot-scope="data">
+                {{ days.find((d) => d.id === data.item.day).name }} ... from:
+                {{ data.item.toHour }} to : {{ data.item.toHour }}
+              </template>
+            </v-select>
+          </v-card-text>
+
+          <v-card-text v-if="deliveryType == 'offeringDropOffLocation'">
+            <legend
+              class="v-label mb-2 theme--light"
+              style="font-size:14px;font-weight:600;"
+            >
+              Day and Time and Address
+            </legend>
+
+            <v-select
+              :items="organization.dropOffLocationSlots"
+              item-text="value"
+              item-value="id"
+              v-model="selectedDropOff"
+              label="Select"
+              solo
+            >
+              <template slot="selection" slot-scope="data">
+                {{ days.find((d) => d.id === data.item.day).name }} ... from:
+                {{ data.item.fromHour }} to : {{ data.item.toHour }} ... address
+                =
+                {{ data.item.address.name }}
+              </template>
+              <template slot="item" slot-scope="data">
+                {{ days.find((d) => d.id === data.item.day).name }} ... from:
+                {{ data.item.toHour }} to : {{ data.item.toHour }} ... address =
+                {{ data.item.address.name }}
+              </template>
+            </v-select>
+          </v-card-text>
+        </v-card-text>
+
+        <v-card-text v-if="selectedDonate.length > 1">
+          <legend
+            class="v-label mb-2 theme--light"
+            style="font-size:14px;font-weight:600;"
+          >
+            Notes
+          </legend>
+          <v-textarea
+            placeholder="Notes"
+            persistent-hint
+            v-model="notes"
+            solo
+          ></v-textarea>
         </v-card-text>
 
         <!-- <v-card-text style="height: 300px;"> </v-card-text> -->
@@ -224,16 +299,70 @@
           <v-btn color="blue darken-1" text @click="donateDialog = false">
             Close
           </v-btn>
-          <v-btn color="blue darken-1" text @click="donateDialog = false">
+          <v-btn color="blue darken-1" text @click="donateUser">
             Save
           </v-btn>
         </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="loginDialog" scrollable max-width="600px">
+      <v-card>
+        <v-card-title>Login</v-card-title>
+
+        <v-card-text>
+          <h1>Log In</h1>
+          <legend
+            class="v-label mb-2 theme--light"
+            style="font-size:14px;font-weight:600;"
+          >
+            User Name
+          </legend>
+          <v-text-field
+            v-model="username"
+            label="User Name"
+            prepend-inner-icon="person"
+            persistent-hint
+            solo
+          ></v-text-field>
+        </v-card-text>
+        <v-card-text>
+          <legend
+            class="v-label mb-2 theme--light"
+            style="font-size:14px;font-weight:600;"
+          >
+            Password
+          </legend>
+          <v-text-field
+            v-model="password"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword"
+            :type="showPassword ? 'text' : 'password'"
+            label="Password"
+            prepend-inner-icon="lock"
+            persistent-hint
+            solo
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actionst>
+          <v-btn
+            block
+            depressed
+            x-large
+            color="#0090D0"
+            @click="login"
+            dark
+            :loading="loginLoading"
+            >Log In</v-btn
+          >
+        </v-card-actionst>
       </v-card>
     </v-dialog>
   </div>
 </template>
 <script>
 import CreditCard from "@/components/creditcard.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -241,6 +370,10 @@ export default {
   },
   data() {
     return {
+      selectedPickupSlot: null,
+      selectedDropOff: null,
+      username: null,
+      password: null,
       deliveryType: "",
       amount: null,
       organization: null,
@@ -249,20 +382,57 @@ export default {
       money: false,
       food: false,
       donateDialog: false,
+      loginDialog: false,
+      loginLoading: false,
       loading: false,
       selectedDonate: "",
+      showPassword: false,
+      days: [
+        {
+          id: 1,
+          name: "Sunday",
+        },
+        {
+          id: 2,
+          name: "Monday",
+        },
+        {
+          id: 3,
+          name: "Tuesday",
+        },
+        {
+          id: 4,
+          name: "Wednesday",
+        },
+        {
+          id: 5,
+          name: "Thursday",
+        },
+        {
+          id: 6,
+          name: "Friday",
+        },
+        {
+          id: 7,
+          name: "Saturday",
+        },
+      ],
+      notes: null,
     };
   },
   mounted() {
     this.getOrganization();
   },
   methods: {
+    getItem() {
+      return "Test";
+    },
     filterMenu() {},
     getOrganization() {
       this.loading = true;
       this.$http
         .get(
-          `http://203237d8713f.ngrok.io/organization/home/${this.$route.params.id}`
+          `${this.$store.state.base_url}/organization/home/${this.$route.params.id}`
         )
         .then((response) => {
           this.organization = response.body;
@@ -271,6 +441,55 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+        });
+    },
+    checkIfLoggedIn() {
+      if (!this.$store.state.crrentUserDonate) {
+        this.loginDialog = true;
+      } else {
+        this.donateDialog = true;
+      }
+    },
+    login() {
+      this.loginLoading = true;
+
+      var data = {
+        username: this.username,
+        password: this.password,
+      };
+
+      axios
+        .post(`${this.$store.state.base_url}/user/login`, data)
+        .then((response) => {
+          this.$store.commit("crrentUserDonate", response.data);
+          this.loginLoading = false;
+          this.loginDialog = false;
+          this.donateDialog = true;
+        });
+    },
+    donateUser() {
+      this.loading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUserDonate.token,
+        },
+      };
+
+      var data = {
+        userId: this.$store.state.crrentUserDonate.id,
+        orgId: this.$route.params.id,
+        donationType: this.selectedDonate,
+        note: this.notes,
+        deliveryType: this.deliveryType,
+        pickupSlotId: this.selectedPickupSlot,
+        dropOffLocationSlotId: this.selectedDropOff,
+        amount: this.amount,
+      };
+      axios
+        .post(`${this.$store.state.base_url}/donation/add`, data, config)
+        .then((response) => {
+          this.loading = false;
+          this.donateDialog = false;
         });
     },
   },

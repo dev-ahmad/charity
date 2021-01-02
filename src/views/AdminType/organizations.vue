@@ -212,7 +212,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/organization/all`, config)
+        .get(`${this.$store.state.base_url}/organization/all`, config)
         .then((response) => {
           this.loading = false;
           this.donations = response.data;
@@ -228,7 +228,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/organization/activate/${org.id}`,
+          `${this.$store.state.base_url}/organization/activate/${org.id}`,
           data,
           config
         )
@@ -247,7 +247,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/organization/activate/${org.id}`,
+          `${this.$store.state.base_url}/organization/activate/${org.id}`,
           data,
           config
         )
@@ -266,7 +266,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/organization/verify/${org.id}`,
+          `${this.$store.state.base_url}/organization/verify/${org.id}`,
           data,
           config
         )
@@ -285,7 +285,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/organization/unverify/${org.id}`,
+          `${this.$store.state.base_url}/organization/unverify/${org.id}`,
           data,
           config
         )
@@ -304,7 +304,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/organization/document/${this.selectedOrg}/${doc.id}/verify`,
+          `${this.$store.state.base_url}/organization/document/${this.selectedOrg}/${doc.id}/verify`,
           data,
           config
         )
@@ -326,7 +326,7 @@ export default {
       };
       axios
         .get(
-          `http://203237d8713f.ngrok.io/organization/document/${org.id}/all`,
+          `${this.$store.state.base_url}/organization/document/${org.id}/all`,
           config
         )
         .then((response) => {

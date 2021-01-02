@@ -152,7 +152,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/user/all`, config)
+        .get(`${this.$store.state.base_url}/user/all`, config)
         .then((response) => {
           this.loading = false;
           this.users = response.data;
@@ -168,7 +168,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/user/address/${user.id}`, config)
+        .get(`${this.$store.state.base_url}/user/address/${user.id}`, config)
         .then((response) => {
           this.addressLoading = false;
           this.adresses.push(response.data);
@@ -184,7 +184,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/user/activate/${user.id}`,
+          `${this.$store.state.base_url}/user/activate/${user.id}`,
           data,
           config
         )
@@ -203,7 +203,7 @@ export default {
       var data = {};
       axios
         .put(
-          `http://203237d8713f.ngrok.io/user/deactivate/${user.id}`,
+          `${this.$store.state.base_url}/user/deactivate/${user.id}`,
           data,
           config
         )

@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <div id="app">
-      <Header v-if="$store.getters.isLoggedIn == false" />
+      <Header v-if="$store.state.isLoggedIn == false" />
       <router-view />
-      <Footer v-if="$store.getters.isLoggedIn == false" />
+      <Footer v-if="$store.state.isLoggedIn == false" />
     </div>
   </v-app>
 </template>

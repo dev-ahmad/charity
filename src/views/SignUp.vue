@@ -238,7 +238,7 @@ export default {
   methods: {
     getCountries() {
       this.$http
-        .get("http://203237d8713f.ngrok.io/country/all")
+        .get(`${this.$store.state.base_url}/country/all`)
         .then((response) => {
           this.countries = response.body;
         })
@@ -261,7 +261,7 @@ export default {
         orgLogo: this.orgLogo,
       };
       this.$http
-        .post("http://203237d8713f.ngrok.io/user/register", data)
+        .post(`${this.$store.state.base_url}/user/register`, data)
         .then((response) => {
           this.$store.commit("setCurrnentUser", response.data);
           this.$store.commit("setIsLoggedIn", true);

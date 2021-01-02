@@ -65,7 +65,7 @@
     </v-row>
 
     <v-row align="center" class="org-container" no-gutters>
-      <template v-for="org in 9">
+      <template v-for="org in organizations">
         <v-col :key="org.id" style="margin: 20px;">
           <v-card class="mx-auto" max-width="400">
             <v-img
@@ -77,7 +77,6 @@
             </v-img>
 
             <v-card-text class="text--primary">
-              <!-- <p class="card-text">{{org.description}}</p> -->
               <p class="card-text">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
                 in magna ac tellus fringilla eleifend. Lorem ipsum dolor sit
@@ -90,34 +89,17 @@
             <v-card-actions>
               <v-btn
                 class="donate-btn"
-                @click="donateDialog = true"
+                @click="$router.push({ path: `/organization/${org.id}` })"
                 depressed
                 color="primary"
               >
-                Donate
+                View
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
       </template>
     </v-row>
-
-    <v-dialog v-model="donateDialog" scrollable max-width="600px">
-      <v-card>
-        <v-card-title>Donate</v-card-title>
-        <v-divider></v-divider>
-        <v-card-text style="height: 300px;"> </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn color="blue darken-1" text @click="donateDialog = false">
-            Close
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="donateDialog = false">
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 <script>
@@ -130,17 +112,16 @@ export default {
       clothes: false,
       money: false,
       food: false,
-      donateDialog: false,
     };
   },
   mounted() {
-    // this.getOrganizations();
+    this.getOrganizations();
   },
   methods: {
     filterMenu() {},
     getOrganizations() {
       this.$http
-        .get("http://203237d8713f.ngrok.io/organization/home/all")
+        .get(`${this.$store.state.base_url}/organization/home/all`)
         .then((response) => {
           this.organizations = response.body;
           console.warn(response.body);

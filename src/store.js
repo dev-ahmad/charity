@@ -7,19 +7,21 @@ const debug = process.env.NODE_ENV !== "production";
 
 export default new Vuex.Store({
   state: {
+    base_url: 'http://203237d8713f.ngrok.io',
+    crrentUserDonate: null,
     crrentUser: null,
     isLoggedIn: false,
   },
-  getters: {
-    isLoggedIn: state => state.isLoggedIn,
-    crrentUser: state => state.crrentUser
-  },
+  getters: {},
   mutations: {
     setIsLoggedIn(state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn;
     },
     setCurrnentUser(state, crrentUser) {
       state.crrentUser = crrentUser;
+    },
+    crrentUserDonate(state, crrentUserDonate) {
+      state.crrentUserDonate = crrentUserDonate;
     },
   },
   actions: {},

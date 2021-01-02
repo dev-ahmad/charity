@@ -15,20 +15,6 @@
           hide-default-footer
           class="elevation-1"
         >
-          <!-- <template v-slot:item.actions="{ item }">
-            <button
-              class="uk-button uk-button-default uk-button-small"
-              @click="setEditCity(item)"
-            >
-              Edit
-            </button>
-            <button
-              class="uk-button uk-button-secondary uk-button-small uk-margin-small-left"
-              @click="goToPath(`cities/${item.id}/universities`)"
-            >
-              Show
-            </button>
-          </template> -->
         </v-data-table>
       </v-card>
     </v-layout>
@@ -100,7 +86,7 @@ export default {
         },
       };
       axios
-        .get(`http://203237d8713f.ngrok.io/user/donation/all`, config)
+        .get(`${this.$store.state.base_url}/user/donation/all`, config)
         .then((response) => {
           this.loading = false;
           this.donations = response.data;

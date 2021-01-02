@@ -72,14 +72,13 @@ export default {
   watch: {},
   methods: {
     login() {
-      var request = new XMLHttpRequest();
       var data = {
         username: this.username,
         password: this.password,
       };
 
       axios
-        .post(`http://203237d8713f.ngrok.io/user/login`, data)
+        .post(`${this.$store.state.base_url}/user/login`, data)
         .then((response) => {
           this.$store.commit("setCurrnentUser", response.data);
           this.$store.commit("setIsLoggedIn", true);
