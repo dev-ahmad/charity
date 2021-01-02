@@ -15,20 +15,6 @@
           hide-default-footer
           class="elevation-1"
         >
-          <!-- <template v-slot:item.actions="{ item }">
-            <button
-              class="uk-button uk-button-default uk-button-small"
-              @click="setEditCity(item)"
-            >
-              Edit
-            </button>
-            <button
-              class="uk-button uk-button-secondary uk-button-small uk-margin-small-left"
-              @click="goToPath(`cities/${item.id}/universities`)"
-            >
-              Show
-            </button>
-          </template> -->
         </v-data-table>
       </v-card>
     </v-layout>
@@ -46,23 +32,36 @@ export default {
           text: "ID",
           value: "id",
           sortable: true,
+          width: 100
         },
         {
           text: "User first name",
           value: "user.firstName",
+          width: 140
         },
         {
           text: "User last name",
           value: "user.lastName",
+          width: 140
+        },
+        {
+          text: "User email",
+          value: "user.email",
+        },
+        {
+          text: "User phone",
+          value: "user.phone",
         },
         {
           text: "Organization",
           value: "organization.name",
+          width: 140
         },
         {
           text: "Donation Type",
           value: "donationType",
           sortable: false,
+          width: 130
         },
         {
           text: "Delivery Type",

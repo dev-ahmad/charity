@@ -10,28 +10,50 @@
       <v-card width="1200">
         <v-data-table
           :headers="headers"
-          :items="donations"
+          :items="users"
           :loading="loading"
           hide-default-footer
           class="elevation-1"
         >
-          <!-- <template v-slot:item.actions="{ item }">
-            <button
-              class="uk-button uk-button-default uk-button-small"
-              @click="setEditCity(item)"
+          <template v-slot:item.actions="{ item }">
+            <v-btn
+              small
+              v-if="!item.status"
+              depressed
+              color="success"
+              @click="activateUser(item)"
             >
-              Edit
-            </button>
-            <button
-              class="uk-button uk-button-secondary uk-button-small uk-margin-small-left"
-              @click="goToPath(`cities/${item.id}/universities`)"
+              Activate
+            </v-btn>
+            <v-btn
+              small
+              v-if="item.status"
+              depressed
+              color="error"
+              @click="deactivateUser(item)"
             >
-              Show
-            </button>
-          </template> -->
+              Deactivate
+            </v-btn>
+            <v-btn style="margin-left: 10px;" small depressed color="primary" @click="getAddresses(item)">
+              Show Address
+            </v-btn>
+          </template>
         </v-data-table>
       </v-card>
     </v-layout>
+
+    <v-dialog v-model="addressesDialog" scrollable max-width="740px">
+      <v-card>
+        <v-data-table
+          :headers="addressHeaders"
+          :items="adresses"
+          :loading="addressLoading"
+          hide-default-footer
+          class="elevation-1"
+        >
+        </v-data-table>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -40,6 +62,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      addressLoading: false,
       loading: false,
       headers: [
         {
@@ -70,8 +93,49 @@ export default {
           value: "username",
           sortable: false,
         },
+        {
+          text: "Action",
+          value: "actions",
+        },
       ],
-      donations: [],
+      addressHeaders: [
+        {
+          text: "ID",
+          value: "id",
+          sortable: true,
+        },
+        {
+          text: "Name",
+          value: "name",
+          sortable: false,
+        },
+        {
+          text: "City",
+          value: "city",
+        },
+        {
+          text: "House number",
+          value: "houseNumber",
+        },
+
+        {
+          text: "Phone",
+          value: "phone",
+          sortable: false,
+        },
+        {
+          text: "Region",
+          value: "region",
+          sortable: false,
+        },
+        {
+          text: "Street",
+          value: "street",
+        },
+      ],
+      users: [],
+      adresses: [],
+      addressesDialog: false,
     };
   },
   computed: {},
@@ -82,7 +146,6 @@ export default {
   methods: {
     getUsers() {
       this.loading = true;
-      var user_id = this.$store.state.crrentUser.id;
       let config = {
         headers: {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
@@ -92,7 +155,61 @@ export default {
         .get(`http://203237d8713f.ngrok.io/user/all`, config)
         .then((response) => {
           this.loading = false;
-          this.donations = response.data;
+          this.users = response.data;
+        });
+    },
+    getAddresses(user) {
+      this.adresses = [];
+      this.addressesDialog = true;
+      this.addressLoading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      axios
+        .get(`http://203237d8713f.ngrok.io/user/address/${user.id}`, config)
+        .then((response) => {
+          this.addressLoading = false;
+          this.adresses.push(response.data);
+        });
+    },
+    activateUser(user) {
+      this.loading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      var data = {};
+      axios
+        .put(
+          `http://203237d8713f.ngrok.io/user/activate/${user.id}`,
+          data,
+          config
+        )
+        .then((response) => {
+          this.loading = false;
+          this.getUsers();
+        });
+    },
+    deactivateUser(user) {
+      this.loading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      var data = {};
+      axios
+        .put(
+          `http://203237d8713f.ngrok.io/user/deactivate/${user.id}`,
+          data,
+          config
+        )
+        .then((response) => {
+          this.loading = false;
+          this.getUsers();
         });
     },
   },

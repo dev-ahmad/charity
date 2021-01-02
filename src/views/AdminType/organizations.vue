@@ -15,23 +15,82 @@
           hide-default-footer
           class="elevation-1"
         >
-          <!-- <template v-slot:item.actions="{ item }">
-            <button
-              class="uk-button uk-button-default uk-button-small"
-              @click="setEditCity(item)"
+          <template v-slot:item.actions="{ item }">
+            <v-btn
+              small
+              v-if="!item.verified"
+              depressed
+              color="success"
+              @click="verifyOrg(item)"
             >
-              Edit
-            </button>
-            <button
-              class="uk-button uk-button-secondary uk-button-small uk-margin-small-left"
-              @click="goToPath(`cities/${item.id}/universities`)"
+              Verify
+            </v-btn>
+            <v-btn
+              style="margin-left: 10px;"
+              small
+              v-if="item.verified"
+              depressed
+              color="error"
+              @click="unverifyOrg(item)"
             >
-              Show
-            </button>
-          </template> -->
+              Unverify
+            </v-btn>
+            <v-btn
+              style="margin-left: 10px;"
+              small
+              v-if="!item.status"
+              depressed
+              color="success"
+              @click="activateOrg(item)"
+            >
+              Active
+            </v-btn>
+            <v-btn
+              style="margin-left: 10px;"
+              small
+              v-if="item.status"
+              depressed
+              color="error"
+              @click="deactivateOrg(item)"
+            >
+              Deactivate
+            </v-btn>
+            <v-btn
+              style="margin-left: 10px;"
+              small
+              depressed
+              color="primary"
+              @click="showDocuments(item)"
+            >
+              Show Documents
+            </v-btn>
+          </template>
         </v-data-table>
       </v-card>
     </v-layout>
+
+    <v-dialog v-model="documentDialog" scrollable max-width="740px">
+      <v-card>
+        <v-data-table
+          :headers="documentHeaders"
+          :items="documents"
+          :loading="documentLoading"
+          hide-default-footer
+          class="elevation-1"
+          ><template v-slot:item.actions="{ item }">
+            <v-btn
+              small
+              v-if="!item.verified"
+              depressed
+              color="success"
+              @click="verifyDocument(item)"
+            >
+              Verify
+            </v-btn>
+          </template>
+        </v-data-table>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -41,6 +100,7 @@ export default {
   data() {
     return {
       loading: false,
+      selectedOrg: null,
       headers: [
         {
           text: "ID",
@@ -65,18 +125,33 @@ export default {
           sortable: false,
         },
         {
-          text: "Payment Amount",
-          value: "orgAdminInfo.amount",
+          text: "Org admin first name",
+          value: "orgAdminInfo.firstName",
+          width: 200,
+        },
+        {
+          text: "Org admin last name",
+          value: "orgAdminInfo.lastName",
+          width: 200,
+        },
+        {
+          text: "Logo",
+          value: "logo",
+          width: 100,
+        },
+        {
+          text: "Accept clothes",
+          value: "acceptClothes",
           sortable: false,
         },
         {
-          text: "Street Address",
-          value: "pickupAddress.street",
+          text: "Accept food",
+          value: "acceptFood",
           sortable: false,
         },
         {
-          text: "House Number",
-          value: "pickupAddress.houseNumber",
+          text: "Accept money",
+          value: "acceptMoney",
           sortable: false,
         },
         {
@@ -84,17 +159,51 @@ export default {
           value: "note",
           sortable: false,
         },
+        {
+          text: "Action",
+          value: "actions",
+          width: 500,
+        },
       ],
       donations: [],
+      documentDialog: false,
+      documentLoading: false,
+      documents: [],
+      documentHeaders: [
+        {
+          text: "ID",
+          value: "id",
+          sortable: true,
+        },
+        {
+          text: "Document Name",
+          value: "documentName",
+        },
+        {
+          text: "Document Url",
+          value: "documentUrl",
+          sortable: false,
+        },
+        {
+          text: "Verified",
+          value: "verified",
+          sortable: false,
+        },
+        {
+          text: "Action",
+          value: "actions",
+          sortable: false,
+        },
+      ],
     };
   },
   computed: {},
   watch: {},
   mounted() {
-    this.getDonations();
+    this.getOrganizations();
   },
   methods: {
-    getDonations() {
+    getOrganizations() {
       this.loading = true;
       var user_id = this.$store.state.crrentUser.id;
       let config = {
@@ -107,6 +216,122 @@ export default {
         .then((response) => {
           this.loading = false;
           this.donations = response.data;
+        });
+    },
+    activateOrg(org) {
+      this.loading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      var data = {};
+      axios
+        .put(
+          `http://203237d8713f.ngrok.io/organization/activate/${org.id}`,
+          data,
+          config
+        )
+        .then((response) => {
+          this.loading = false;
+          this.getOrganizations();
+        });
+    },
+    deactivateOrg(org) {
+      this.loading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      var data = {};
+      axios
+        .put(
+          `http://203237d8713f.ngrok.io/organization/activate/${org.id}`,
+          data,
+          config
+        )
+        .then((response) => {
+          this.loading = false;
+          this.getOrganizations();
+        });
+    },
+    verifyOrg(org) {
+      this.loading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      var data = {};
+      axios
+        .put(
+          `http://203237d8713f.ngrok.io/organization/verify/${org.id}`,
+          data,
+          config
+        )
+        .then((response) => {
+          this.loading = false;
+          this.getOrganizations();
+        });
+    },
+    unverifyOrg(org) {
+      this.loading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      var data = {};
+      axios
+        .put(
+          `http://203237d8713f.ngrok.io/organization/unverify/${org.id}`,
+          data,
+          config
+        )
+        .then((response) => {
+          this.loading = false;
+          this.getOrganizations();
+        });
+    },
+    verifyDocument(doc) {
+      this.loading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      var data = {};
+      axios
+        .put(
+          `http://203237d8713f.ngrok.io/organization/document/${this.selectedOrg}/${doc.id}/verify`,
+          data,
+          config
+        )
+        .then((response) => {
+          this.loading = false;
+          this.showDocuments(this.selectedOrg);
+        });
+    },
+    showDocuments(org) {
+      this.selectedOrg = org.id;
+      this.documents = [];
+      this.documentDialog = true;
+      this.documentLoading = true;
+      var org_id = this.$store.state.crrentUser.id;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      axios
+        .get(
+          `http://203237d8713f.ngrok.io/organization/document/${org.id}/all`,
+          config
+        )
+        .then((response) => {
+          this.documentLoading = false;
+          this.documents = response.data;
         });
     },
   },

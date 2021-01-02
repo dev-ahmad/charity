@@ -15,20 +15,17 @@
           hide-default-footer
           class="elevation-1"
         >
-          <!-- <template v-slot:item.actions="{ item }">
-            <button
-              class="uk-button uk-button-default uk-button-small"
-              @click="setEditCity(item)"
+          <template v-slot:item.actions="{ item }">
+            <v-btn
+              small
+              v-if="item.received"
+              depressed
+              color="success"
+              @click="receivedDonation(item)"
             >
-              Edit
-            </button>
-            <button
-              class="uk-button uk-button-secondary uk-button-small uk-margin-small-left"
-              @click="goToPath(`cities/${item.id}/universities`)"
-            >
-              Show
-            </button>
-          </template> -->
+              Recieved
+            </v-btn>
+          </template>
         </v-data-table>
       </v-card>
     </v-layout>
@@ -85,6 +82,10 @@ export default {
           value: "note",
           sortable: false,
         },
+        {
+          text: "Action",
+          value: "actions",
+        },
       ],
       donations: [],
     };
@@ -109,6 +110,21 @@ export default {
         .then((response) => {
           this.loading = false;
           this.donations = response.data;
+        });
+    },
+    receivedDonation(don) {
+      var org_id = this.$store.state.crrentUser.orgId;
+      this.loading = true;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+      axios
+        .put(`http://203237d8713f.ngrok.io/donation/${org_id}/${don.id}/received`, null, config)
+        .then((response) => {
+          this.loading = false;
+          this.getDonations();
         });
     },
   },
