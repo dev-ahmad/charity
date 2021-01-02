@@ -411,7 +411,7 @@ export default {
     // box-shadow: 3px 13px 30px 0px rgba(21, 34, 67, 0.2);
     // box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4);
     border-radius: 10px;
-    padding: 35px;
+    // padding: 35px;
     padding-top: 180px;
 
     @media screen and (max-width: 480px) {

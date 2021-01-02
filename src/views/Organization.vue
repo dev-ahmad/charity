@@ -169,6 +169,7 @@
         </v-card-text>
 
         <v-card-text v-if="selectedDonate == 'money'">
+          <credit-card></credit-card>
           <legend
             class="v-label mb-2 theme--light"
             style="font-size:14px;font-weight:600;"
@@ -181,7 +182,18 @@
             v-model="amount"
             solo
           ></v-text-field>
-          <credit-card></credit-card>
+          <legend
+            class="v-label mb-2 theme--light"
+            style="font-size:14px;font-weight:600;"
+          >
+            Notes
+          </legend>
+          <v-textarea
+            placeholder="Notes"
+            persistent-hint
+            v-model="notes"
+            solo
+          ></v-textarea>
         </v-card-text>
 
         <v-card-text
@@ -276,21 +288,20 @@
               </template>
             </v-select>
           </v-card-text>
-        </v-card-text>
-
-        <v-card-text v-if="selectedDonate.length > 1">
-          <legend
-            class="v-label mb-2 theme--light"
-            style="font-size:14px;font-weight:600;"
-          >
-            Notes
-          </legend>
-          <v-textarea
-            placeholder="Notes"
-            persistent-hint
-            v-model="notes"
-            solo
-          ></v-textarea>
+          <v-card-text>
+            <legend
+              class="v-label mb-2 theme--light"
+              style="font-size:14px;font-weight:600;"
+            >
+              Notes
+            </legend>
+            <v-textarea
+              placeholder="Notes"
+              persistent-hint
+              v-model="notes"
+              solo
+            ></v-textarea>
+          </v-card-text>
         </v-card-text>
 
         <!-- <v-card-text style="height: 300px;"> </v-card-text> -->

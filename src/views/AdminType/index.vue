@@ -69,7 +69,7 @@ export default {
   },
   data() {
     return {
-      active_tab: 5,
+      active_tab: 0,
     };
   },
   methods: {
