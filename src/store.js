@@ -7,7 +7,7 @@ const debug = process.env.NODE_ENV !== "production";
 
 export default new Vuex.Store({
   state: {
-    base_url: 'http://203237d8713f.ngrok.io',
+    base_url: 'http://3223292f8061.ngrok.io',
     crrentUserDonate: null,
     crrentUser: null,
     isLoggedIn: false,

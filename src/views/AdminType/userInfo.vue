@@ -137,58 +137,6 @@
       </v-card>
     </v-layout>
 
-    <v-dialog v-model="resetDialog" scrollable max-width="440px">
-      <v-card>
-        <v-card-title>Reset Password</v-card-title>
-        <v-card-text>
-          <legend
-            class="v-label mb-2 theme--light"
-            style="font-size:14px;font-weight:600;"
-          >
-            Username
-          </legend>
-          <v-text-field
-            placeholder="username"
-            persistent-hint
-            v-model="reset.username"
-            solo
-          ></v-text-field>
-          <credit-card></credit-card>
-        </v-card-text>
-        <v-card-text>
-          <legend
-            class="v-label mb-2 theme--light"
-            style="font-size:14px;font-weight:600;"
-          >
-            Email
-          </legend>
-          <v-text-field
-            placeholder="Email"
-            persistent-hint
-            v-model="reset.email"
-            solo
-          ></v-text-field>
-          <credit-card></credit-card>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="createCountryDialog = false"
-          >
-            Close
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
-            :loading="resetLoading"
-            @click="resetPassword"
-          >
-            Reset
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
     <v-snackbar
       :timeout="1500"

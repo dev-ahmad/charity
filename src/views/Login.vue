@@ -50,10 +50,72 @@
               :loading="loading"
               >Log In</v-btn
             >
+            <v-btn
+              text
+              outlined
+              medium
+              color="#0090D0"
+              @click="resetDialog = true"
+              dark
+              >Reset Password</v-btn
+            >
           </v-card-text>
         </v-form>
       </v-card>
     </v-layout>
+
+    <v-dialog v-model="resetDialog" scrollable max-width="440px">
+      <v-card>
+        <v-card-title>Reset Password</v-card-title>
+        <v-card-text>
+          <legend
+            class="v-label mb-2 theme--light"
+            style="font-size:14px;font-weight:600;"
+          >
+            Username
+          </legend>
+          <v-text-field
+            placeholder="username"
+            persistent-hint
+            v-model="reset.username"
+            solo
+          ></v-text-field>
+          <credit-card></credit-card>
+        </v-card-text>
+        <v-card-text>
+          <legend
+            class="v-label mb-2 theme--light"
+            style="font-size:14px;font-weight:600;"
+          >
+            Email
+          </legend>
+          <v-text-field
+            placeholder="Email"
+            persistent-hint
+            v-model="reset.email"
+            solo
+          ></v-text-field>
+          <credit-card></credit-card>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="createCountryDialog = false"
+          >
+            Close
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            :loading="resetLoading"
+            @click="resetPassword"
+          >
+            Reset
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -62,6 +124,12 @@ import axios from "axios";
 export default {
   data() {
     return {
+      resetLoading: false,
+      resetDialog: false,
+      reset: {
+        username: "",
+        email: "",
+      },
       username: "",
       password: "",
       showPassword: false,
@@ -91,6 +159,29 @@ export default {
           if (response.data.userType == "SUPER_ADMIN") {
             this.$router.push({ path: "/admin" });
           }
+        });
+    },
+    resetPassword() {
+      this.resetLoading = true;
+
+      var data = {
+        username: this.reset.username,
+        email: this.reset.email,
+      };
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+
+      axios
+        .put(`${this.$store.state.base_url}/user/reset_password`, data, config)
+        .then((response) => {
+          this.messageText = "Please check your email";
+          this.showMsg = true;
+          this.getUser();
+          this.resetLoading = false;
+          this.resetDialog = false;
         });
     },
   },
