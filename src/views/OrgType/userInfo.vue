@@ -107,7 +107,17 @@
             <v-row>
               <v-col cols="10" sm="4" md="5"> </v-col>
               <v-col cols="10" sm="4" md="2"> </v-col>
-              <v-col cols="4" sm="4" md="3"> </v-col>
+              <v-col cols="4" sm="4" md="3">
+                <v-btn
+                  text
+                  outlined
+                  medium
+                  color="#0090D0"
+                  @click="changePasswordDialog = true"
+                  dark
+                  >Change Password</v-btn
+                >
+              </v-col>
 
               <v-col cols="4" sm="4" md="2">
                 <v-btn
@@ -127,17 +137,60 @@
       </v-card>
     </v-layout>
 
-    <v-snackbar
-      :timeout="1500"
-      :value="showMsg"
-      color="success"
-      absolute
-      left
-      shaped
-      top
-    >
-      {{ messageText }}
-    </v-snackbar>
+    <v-dialog v-model="changePasswordDialog" scrollable max-width="440px">
+      <v-card>
+        <v-card-title>Change Password</v-card-title>
+        <v-card-text>
+          <legend
+            class="v-label mb-2 theme--light"
+            style="font-size:14px;font-weight:600;"
+          >
+            Old password
+          </legend>
+          <v-text-field
+            placeholder="Old password"
+            type="password"
+            persistent-hint
+            v-model="change.oldPassword"
+            solo
+          ></v-text-field>
+          <credit-card></credit-card>
+        </v-card-text>
+        <v-card-text>
+          <legend
+            class="v-label mb-2 theme--light"
+            style="font-size:14px;font-weight:600;"
+          >
+            New password
+          </legend>
+          <v-text-field
+            placeholder="New password"
+            type="password"
+            persistent-hint
+            v-model="change.newPassword"
+            solo
+          ></v-text-field>
+          <credit-card></credit-card>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="createCountryDialog = false"
+          >
+            Close
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            :loading="resetLoading"
+            @click="changePassword"
+          >
+            Change
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -146,8 +199,12 @@ import axios from "axios";
 export default {
   data() {
     return {
-      showMsg: false,
-      messageText: null,
+      changePasswordDialog: false,
+      changePasswordLoading: false,
+      change: {
+        oldPassword: "",
+        newPassword: "",
+      },
       userTypes: [
         {
           name: "USER",
@@ -243,6 +300,43 @@ export default {
           },
           (error) => {
             this.updateLoading = false;
+          }
+        );
+    },
+    changePassword() {
+      this.changePasswordLoading = true;
+
+      var user_id = this.$store.state.crrentUser.id;
+
+      var data = {
+        oldPassword: this.change.oldPassword,
+        newPassword: this.change.newPassword,
+      };
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.crrentUser.token,
+        },
+      };
+
+      axios
+        .put(
+          `${this.$store.state.base_url}/user/change_password/${user_id}`,
+          data,
+          config
+        )
+        .then(
+          (response) => {
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Password changes successfully",
+            });
+            this.getUser();
+            this.changePasswordLoading = false;
+            this.changePasswordDialog = false;
+          },
+          (error) => {
+            this.changePasswordLoading = false;
           }
         );
     },
