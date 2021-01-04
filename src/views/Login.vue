@@ -177,13 +177,21 @@ export default {
 
       axios
         .put(`${this.$store.state.base_url}/user/reset_password`, data, config)
-        .then((response) => {
-          this.messageText = "Please check your email";
-          this.showMsg = true;
-          this.getUser();
-          this.resetLoading = false;
-          this.resetDialog = false;
-        });
+        .then(
+          (response) => {
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Reset successfully, please check your email",
+            });
+            this.getUser();
+            this.resetLoading = false;
+            this.resetDialog = false;
+          },
+          (error) => {
+            this.resetLoading = false;
+          }
+        );
     },
   },
 };

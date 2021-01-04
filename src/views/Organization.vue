@@ -207,7 +207,7 @@
           </legend>
           <v-btn
             class="ma-2"
-            @click="deliveryType = 'offeringDropOffLocation'"
+            @click="deliveryType = 'drop_off_location'"
             small
             color="green"
             dark
@@ -220,7 +220,7 @@
           </v-btn>
           <v-btn
             class="ma-2"
-            @click="deliveryType = 'offeringPickup'"
+            @click="deliveryType = 'pickup'"
             small
             color="red"
             dark
@@ -232,7 +232,7 @@
             </v-icon>
           </v-btn>
 
-          <v-card-text v-if="deliveryType == 'offeringPickup'">
+          <v-card-text v-if="deliveryType == 'pickup'">
             <legend
               class="v-label mb-2 theme--light"
               style="font-size:14px;font-weight:600;"
@@ -259,7 +259,7 @@
             </v-select>
           </v-card-text>
 
-          <v-card-text v-if="deliveryType == 'offeringDropOffLocation'">
+          <v-card-text v-if="deliveryType == 'drop_off_location'">
             <legend
               class="v-label mb-2 theme--light"
               style="font-size:14px;font-weight:600;"
@@ -501,10 +501,20 @@ export default {
       };
       axios
         .post(`${this.$store.state.base_url}/donation/add`, data, config)
-        .then((response) => {
-          this.loading = false;
-          this.donateDialog = false;
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.donateDialog = false;
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Donate sent successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
   },
 };

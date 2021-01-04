@@ -57,7 +57,7 @@
               Cancel
             </v-btn>
             <v-btn color="primary" text @click="filterMenu">
-              Save
+              Apply
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -103,6 +103,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -119,7 +120,24 @@ export default {
     this.getOrganizations();
   },
   methods: {
-    filterMenu() {},
+    filterMenu() {
+      this.loading = true;
+      var data = {
+        name: this.name,
+        clothes: this.clothes,
+        money: this.money,
+        food: this.food,
+      };
+      axios
+        .get(`${this.$store.state.base_url}/organization/home/all`, data)
+        .then((response) => {
+          this.organizations = response.data;
+          this.loading = false;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     getOrganizations() {
       this.loading = true;
       this.$http

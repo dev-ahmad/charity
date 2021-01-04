@@ -9,6 +9,10 @@
         </v-row>
       </v-carousel-item>
     </v-carousel>
+    <v-row style="margin: 60px;">
+      <h3>{{ content }}</h3>
+    </v-row>
+    <v-divider style="margin-top: 50px;"></v-divider>
     <p class="organizations-text">Organizations</p>
     <v-row align="center" class="org-container" no-gutters>
       <v-col v-for="org in organizations" :key="org.id">
@@ -93,6 +97,7 @@ export default {
     return {
       loading: false,
       organizations: [],
+      content: "",
       items: [
         {
           src:
@@ -126,7 +131,9 @@ export default {
       this.loading = true;
       this.$http
         .get(`${this.$store.state.base_url}/page/HOME_PAGE`)
-        .then((response) => {})
+        .then((response) => {
+          this.content = response.data.content;
+        })
         .finally(() => {
           this.loading = false;
         });

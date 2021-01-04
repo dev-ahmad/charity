@@ -5,44 +5,11 @@
         <div class="col-sm-12 col-md-6">
           <h6>About</h6>
           <p class="text-justify">
-            CHARITY <i>makes it easy and safe</i> for you to give to local
-            projects anywhere in the world, while providing nonprofits with the
-            tools, training, and support they need to thrive. We help donors
-            make safe and easy US tax-deductible donations to vetted,
-            locally-driven organizations around the world. Donations are
-            tax-deductible in the US, or UK taxpayers can give in GBP and claim
-            an extra 25% if Gift Aid eligible. We're so sure you'll love giving
-            through GlobalGiving, we offer a donation satisfaction guarantee.
+            {{ content }}
           </p>
         </div>
 
-        <div class="col-xs-6 col-md-3">
-          <h6>Categories</h6>
-          <ul class="footer-links">
-            <li><a href="http://scanfcode.com/category/c-language/">C</a></li>
-            <li>
-              <a href="http://scanfcode.com/category/front-end-development/"
-                >UI Design</a
-              >
-            </li>
-            <li>
-              <a href="http://scanfcode.com/category/back-end-development/"
-                >PHP</a
-              >
-            </li>
-            <li>
-              <a href="http://scanfcode.com/category/java-programming-language/"
-                >Java</a
-              >
-            </li>
-            <li>
-              <a href="http://scanfcode.com/category/android/">Android</a>
-            </li>
-            <li>
-              <a href="http://scanfcode.com/category/templates/">Templates</a>
-            </li>
-          </ul>
-        </div>
+        <div class="col-xs-6 col-md-3"></div>
 
         <div class="col-xs-6 col-md-3">
           <h6>Quick Links</h6>
@@ -88,37 +55,23 @@
 
 <script>
 export default {
-  name: "Header",
+  name: "Footer",
   data() {
     return {
-      dialog: false,
-      nav: [
-        {
-          icon: "home",
-          text: "Home",
-          title: "Back to Home page",
-          active: true,
-        },
-        {
-          icon: "info",
-          text: "About",
-          title: "About this demo",
-          active: false,
-        },
-        {
-          icon: "assignment_turned_in",
-          text: "Todos",
-          title: "Some stuff that needs doing",
-          active: false,
-        },
-        {
-          icon: "email",
-          text: "Contact",
-          title: "Our Contact info",
-          active: false,
-        },
-      ],
+      content: "",
     };
+  },
+  mounted() {
+    this.getHomePage();
+  },
+  methods: {
+    getHomePage() {
+      this.$http
+        .get(`${this.$store.state.base_url}/page/HOME_PAGE`)
+        .then((response) => {
+          this.content = response.data.content;
+        });
+    },
   },
 };
 </script>
