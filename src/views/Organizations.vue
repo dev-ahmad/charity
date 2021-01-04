@@ -122,14 +122,13 @@ export default {
   methods: {
     filterMenu() {
       this.loading = true;
-      var data = {
-        name: this.name,
-        clothes: this.clothes,
-        money: this.money,
-        food: this.food,
-      };
+
+      var filter = `name=${this.name}&clothes=${this.clothes}&money=${this.money}&food=${this.food}`;
+
       axios
-        .get(`${this.$store.state.base_url}/organization/home/all`, data)
+        .get(
+          `${this.$store.state.base_url}/organization/home/search?${filter}`
+        )
         .then((response) => {
           this.organizations = response.data;
           this.loading = false;
