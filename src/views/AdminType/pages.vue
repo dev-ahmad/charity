@@ -130,12 +130,15 @@ export default {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
-      axios
-        .get(`${this.$store.state.base_url}/page/all`, config)
-        .then((response) => {
+      axios.get(`${this.$store.state.base_url}/page/all`, config).then(
+        (response) => {
           this.loading = false;
           this.countries = response.data;
-        });
+        },
+        (error) => {
+          this.loading = false;
+        }
+      );
     },
     openEditDialog(page) {
       this.selectedPage = page;
@@ -159,11 +162,21 @@ export default {
           data,
           config
         )
-        .then((response) => {
-          this.updatePageLoading = false;
-          this.updatePageDialog = false;
-          this.getPages();
-        });
+        .then(
+          (response) => {
+            this.updatePageLoading = false;
+            this.updatePageDialog = false;
+            this.getPages();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Page updated successfully",
+            });
+          },
+          (error) => {
+            this.updatePageLoading = false;
+          }
+        );
     },
   },
 };

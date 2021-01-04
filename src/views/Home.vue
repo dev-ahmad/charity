@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <v-carousel hide-delimiters>
       <v-carousel-item v-for="(item, i) in items" :key="i" :src="item.src">
         <v-row class="fill-height" align="center" justify="center">
@@ -123,6 +123,7 @@ export default {
   },
   methods: {
     getHomePage() {
+      this.loading = true;
       this.$http
         .get(`${this.$store.state.base_url}/page/HOME_PAGE`)
         .then((response) => {})
@@ -131,6 +132,7 @@ export default {
         });
     },
     getOrganizations() {
+      this.loading = true;
       this.$http
         .get(`${this.$store.state.base_url}/organization/home/all`)
         .then((response) => {

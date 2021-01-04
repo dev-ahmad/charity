@@ -107,17 +107,7 @@
             <v-row>
               <v-col cols="10" sm="4" md="5"> </v-col>
               <v-col cols="10" sm="4" md="2"> </v-col>
-              <v-col cols="4" sm="4" md="3">
-                <v-btn
-                  text
-                  outlined
-                  medium
-                  color="#0090D0"
-                  @click="resetDialog = true"
-                  dark
-                  >Reset Password</v-btn
-                >
-              </v-col>
+              <v-col cols="4" sm="4" md="3"> </v-col>
 
               <v-col cols="4" sm="4" md="2">
                 <v-btn
@@ -136,7 +126,6 @@
         </v-form>
       </v-card>
     </v-layout>
-
 
     <v-snackbar
       :timeout="1500"
@@ -159,12 +148,6 @@ export default {
     return {
       showMsg: false,
       messageText: null,
-      resetLoading: false,
-      resetDialog: false,
-      reset: {
-        username: "",
-        email: "",
-      },
       userTypes: [
         {
           name: "USER",
@@ -248,33 +231,20 @@ export default {
 
       axios
         .put(`${this.$store.state.base_url}/user/${user_id}`, data, config)
-        .then((response) => {
-          this.getUser();
-          this.updateLoading = false;
-        });
-    },
-    resetPassword() {
-      this.resetLoading = true;
-
-      var data = {
-        username: this.reset.username,
-        email: this.reset.email,
-      };
-      let config = {
-        headers: {
-          Authorization: "Bearer " + this.$store.state.crrentUser.token,
-        },
-      };
-
-      axios
-        .put(`${this.$store.state.base_url}/user/reset_password`, data, config)
-        .then((response) => {
-          this.messageText = "Please check your email";
-          this.showMsg = true;
-          this.getUser();
-          this.resetLoading = false;
-          this.resetDialog = false;
-        });
+        .then(
+          (response) => {
+            this.getUser();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "User updated successfully",
+            });
+            this.updateLoading = false;
+          },
+          (error) => {
+            this.updateLoading = false;
+          }
+        );
     },
   },
 };

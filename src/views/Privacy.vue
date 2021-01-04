@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div
       class="contact-cont"
       style='background-image: url("https://www.globalgiving.org/img/banners/hero_aboutus_lg.jpg");'
@@ -13,6 +13,7 @@
 export default {
   data() {
     return {
+      loading: false,
       privacy: "",
     };
   },
@@ -21,10 +22,12 @@ export default {
   },
   methods: {
     getPrivacy() {
+      this.loading = true;
       this.$http
         .get(`${this.$store.state.base_url}/page/PRIVACY`)
         .then((response) => {
           this.privacy = response.data.content;
+          this.loading = false;
         })
         .finally(() => {
           this.loading = false;

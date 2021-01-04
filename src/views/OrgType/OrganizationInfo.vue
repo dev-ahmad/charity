@@ -599,7 +599,10 @@ export default {
         },
       };
       axios
-        .get(`${this.$store.state.base_url}/organization/address/active/all`, config)
+        .get(
+          `${this.$store.state.base_url}/organization/address/active/all`,
+          config
+        )
         .then((response) => {
           this.addresses = response.data;
           this.loading = false;
@@ -636,8 +639,8 @@ export default {
         });
     },
     getCountries() {
-      this.$http
-        .get("${this.$store.state.base_url}/country/all")
+      axios
+        .get(`${this.$store.state.base_url}/country/all`)
         .then((response) => {
           this.countries = response.body;
         })
@@ -668,18 +671,25 @@ export default {
         offeringPickup: this.offeringPickup,
         dropOffLocationSlots: this.dropOffLocationSlots,
       };
-      this.$http
+      axios
         .put(
           `${this.$store.state.base_url}/organization/${org_id}`,
           data,
           config
         )
-        .then((response) => {
-          this.loading = false;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Organization updated successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     createDroppOffLocation(update) {
       var org_id = this.$store.state.crrentUser.orgId;
@@ -702,17 +712,27 @@ export default {
       }
       var data = this.dropOffLocationSlots;
 
-      this.$http
+      axios
         .post(
           `${this.$store.state.base_url}/organization/dfl_slot/${org_id}/modify`,
           data,
           config
         )
-        .then((response) => {
-          this.getOrgInfo();
-          this.dropOffDialog = false;
-          this.createLoading = false;
-        })
+        .then(
+          (response) => {
+            this.getOrgInfo();
+            this.dropOffDialog = false;
+            this.createLoading = false;
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Dropp off location created successfully",
+            });
+          },
+          (error) => {
+            this.createLoading = false;
+          }
+        )
         .finally(() => {
           this.createLoading = false;
         });
@@ -737,20 +757,27 @@ export default {
       this.pickupSlots.push(new_value);
       var data = this.pickupSlots;
 
-      this.$http
+      axios
         .post(
           `${this.$store.state.base_url}/organization/pickup_slots/${org_id}/modify`,
           data,
           config
         )
-        .then((response) => {
-          this.getOrgInfo();
-          this.pickupDialog = false;
-          this.createLoading = false;
-        })
-        .finally(() => {
-          this.createLoading = false;
-        });
+        .then(
+          (response) => {
+            this.getOrgInfo();
+            this.pickupDialog = false;
+            this.createLoading = false;
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "pickup location created successfully",
+            });
+          },
+          (error) => {
+            this.createLoading = false;
+          }
+        );
     },
     deleteDropOff(item) {
       this.dropOffLocationSlots = this.dropOffLocationSlots.filter((a) => {

@@ -341,17 +341,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-snackbar
-      :timeout="1500"
-      :value="showMsg"
-      color="success"
-      absolute
-      right
-      shaped
-      top
-    >
-      {{ messageText }}
-    </v-snackbar>
   </div>
 </template>
 <script>
@@ -360,8 +349,6 @@ import axios from "axios";
 export default {
   data() {
     return {
-      showMsg: false,
-      messageText: null,
       createLoading: false,
       addNewAddressDialog: false,
       updateLoading: false,
@@ -416,7 +403,7 @@ export default {
     },
     getCountries() {
       this.$http
-        .get("${this.$store.state.base_url}/country/all")
+        .get(`${this.$store.state.base_url}/country/all`)
         .then((response) => {
           this.countries = response.body;
         })
@@ -439,21 +426,26 @@ export default {
         country: address.country,
         note: address.note,
       };
-      this.$http
+      axios
         .put(
           `${this.$store.state.base_url}/organization/address/${this.$store.state.crrentUser.orgId}/${address.id}`,
           data,
           config
         )
-        .then((response) => {
-          this.messageText = "Address updated successfully";
-          this.showMsg = true;
-          this.loading = false;
-          this.getAddresses();
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.getAddresses();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Address updated successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     createAddress() {
       let config = {
@@ -472,17 +464,27 @@ export default {
         note: this.note,
       };
       this.createLoading = true;
-      this.$http
-        .post("${this.$store.state.base_url}/organization/address", data, config)
-        .then((response) => {
-          this.messageText = "Address created successfully";
-          this.showMsg = true;
-          this.createLoading = false;
-          this.addNewAddressDialog = false;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+
+      axios
+        .post(
+          `${this.$store.state.base_url}/organization/address`,
+          data,
+          config
+        )
+        .then(
+          (response) => {
+            this.createLoading = false;
+            this.addNewAddressDialog = false;
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Address created successfully",
+            });
+          },
+          (error) => {
+            this.createLoading = false;
+          }
+        );
     },
     activateAddress(address) {
       this.loading = true;
@@ -491,21 +493,26 @@ export default {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
-      this.$http
+      axios
         .put(
           `${this.$store.state.base_url}/organization/address/activate/${this.$store.state.crrentUser.orgId}/${address.id}`,
           null,
           config
         )
-        .then((response) => {
-          this.messageText = "Address activated successfully";
-          this.showMsg = true;
-          this.loading = false;
-          this.getAddresses();
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        .then(
+          (response) => {
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Address activated successfully",
+            });
+            this.loading = false;
+            this.getAddresses();
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     deactivateAddress(address) {
       this.loading = true;
@@ -514,21 +521,26 @@ export default {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
-      this.$http
+      axios
         .put(
           `${this.$store.state.base_url}/organization/address/deactivate/${this.$store.state.crrentUser.orgId}/${address.id}`,
           null,
           config
         )
-        .then((response) => {
-          this.messageText = "Address deactivated successfully";
-          this.showMsg = true;
-          this.loading = false;
-          this.getAddresses();
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        .then(
+          (response) => {
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Address Deactivated successfully",
+            });
+            this.loading = false;
+            this.getAddresses();
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
   },
 };

@@ -26,7 +26,7 @@ Vue.use(ElementUI);
 
 axios.interceptors.response.use(
   function(response) {
-    return response.data;
+    return response;
   },
   function(error) {
     switch (error.response.status) {
@@ -34,40 +34,95 @@ axios.interceptors.response.use(
         break;
 
       case 400:
-        Message({
-          type: "error",
-          showClose: true,
-          message: error.response.data.errors[0],
-        });
+        if (error.response.data.message) {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.message,
+          });
+        } else {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.errors[0],
+          });
+        }
         break;
 
       case 401:
-        Message({
-          type: "error",
-          showClose: true,
-          message: error.response.data.errors[0],
-        });
+        if (error.response.data.message) {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.message,
+          });
+        } else {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.errors[0],
+          });
+        }
+        break;
+      case 415:
+        if (error.response.data.message) {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.message,
+          });
+        } else {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.errors[0],
+          });
+        }
         break;
       case 422:
-        Message({
-          type: "error",
-          showClose: true,
-          message: error.response.data.errors[0],
-        });
+        if (error.response.data.message) {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.message,
+          });
+        } else {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.errors[0],
+          });
+        }
         break;
       case 403:
-        Message({
-          type: "error",
-          showClose: true,
-          message: error.response.data.errors[0],
-        });
+        if (error.response.data.message) {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.message,
+          });
+        } else {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.errors[0],
+          });
+        }
         break;
       case 404:
-        Message({
-          type: "error",
-          showClose: true,
-          message: error.response.data.errors[0],
-        });
+        if (error.response.data.message) {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.message,
+          });
+        } else {
+          Message({
+            type: "error",
+            showClose: true,
+            message: error.response.data.errors[0],
+          });
+        }
         break;
       case 502:
         setTimeout(() => {

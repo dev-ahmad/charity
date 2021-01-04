@@ -27,10 +27,17 @@
           class="elevation-1"
         >
           <template v-slot:item.actions="{ item }">
-            <v-btn small depressed color="success" @click="activateUser(item)">
+            <v-btn
+              v-if="!item.status"
+              small
+              depressed
+              color="success"
+              @click="activateUser(item)"
+            >
               Activate
             </v-btn>
             <v-btn
+              v-if="item.status"
               style="margin-left: 10px;"
               small
               depressed
@@ -93,7 +100,7 @@
 
     <v-dialog v-model="editDialog" scrollable max-width="440px">
       <v-card>
-        <v-card-title>Create country</v-card-title>
+        <v-card-title>Update country</v-card-title>
         <v-card-text>
           <legend
             class="v-label mb-2 theme--light"
@@ -113,7 +120,7 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="createCountryDialog = false"
+            @click="editDialog = false"
           >
             Close
           </v-btn>
@@ -177,12 +184,15 @@ export default {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
-      axios
-        .get(`${this.$store.state.base_url}/country`, config)
-        .then((response) => {
+      axios.get(`${this.$store.state.base_url}/country`, config).then(
+        (response) => {
           this.loading = false;
           this.countries = response.data;
-        });
+        },
+        (error) => {
+          this.loading = false;
+        }
+      );
     },
     activateUser(contry) {
       this.loading = true;
@@ -198,10 +208,20 @@ export default {
           data,
           config
         )
-        .then((response) => {
-          this.loading = false;
-          this.getCountries();
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.getCountries();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Country activated successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     deactivateUser(contry) {
       this.loading = true;
@@ -217,10 +237,20 @@ export default {
           data,
           config
         )
-        .then((response) => {
-          this.loading = false;
-          this.getCountries();
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.getCountries();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Country deactivated successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     createCountry() {
       this.createCountryLoading = true;
@@ -235,11 +265,21 @@ export default {
       };
       axios
         .post(`${this.$store.state.base_url}/country/add`, data, config)
-        .then((response) => {
-          this.createCountryLoading = false;
-          this.createCountryDialog = false;
-          this.getCountries();
-        });
+        .then(
+          (response) => {
+            this.createCountryLoading = false;
+            this.createCountryDialog = false;
+            this.getCountries();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Country created successfully",
+            });
+          },
+          (error) => {
+            this.createCountryLoading = false;
+          }
+        );
     },
     updateCountry() {
       this.createCountryLoading = true;
@@ -258,11 +298,21 @@ export default {
           data,
           config
         )
-        .then((response) => {
-          this.createCountryLoading = false;
-          this.editDialog = false;
-          this.getCountries();
-        });
+        .then(
+          (response) => {
+            this.createCountryLoading = false;
+            this.editDialog = false;
+            this.getCountries();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Country updated successfully",
+            });
+          },
+          (error) => {
+            this.createCountryLoading = false;
+          }
+        );
     },
     openEditDialog(country) {
       this.selectedCountry = country;

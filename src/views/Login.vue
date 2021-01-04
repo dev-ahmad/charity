@@ -148,6 +148,7 @@ export default {
       axios
         .post(`${this.$store.state.base_url}/user/login`, data)
         .then((response) => {
+          console.warn(response.data.userType);
           this.$store.commit("setCurrnentUser", response.data);
           this.$store.commit("setIsLoggedIn", true);
           if (response.data.userType == "ORG") {

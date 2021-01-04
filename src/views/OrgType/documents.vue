@@ -1,12 +1,7 @@
 <template>
   <div class="sign-up-container">
     <v-row class="d-flex justify-end mb-6" style="margin: 30px;">
-      <v-btn
-        class="ma-2"
-        large
-        color="primary"
-        @click="addNewDocDialog = true"
-      >
+      <v-btn class="ma-2" large color="primary" @click="addNewDocDialog = true">
         Add
       </v-btn>
     </v-row>
@@ -85,11 +80,7 @@
         </v-form>
         <v-divider></v-divider>
         <v-card-actions class="d-flex justify-end mb-6">
-          <v-btn
-            color="blue darken-1"
-            text
-            @click="addNewDocDialog = false"
-          >
+          <v-btn color="blue darken-1" text @click="addNewDocDialog = false">
             Close
           </v-btn>
           <v-btn
@@ -161,10 +152,15 @@ export default {
           `${this.$store.state.base_url}/organization/document/${org_id}/all`,
           config
         )
-        .then((response) => {
-          this.loading = false;
-          this.donations = response.data;
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.donations = response.data;
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     createDocument() {
       var org_id = this.$store.state.crrentUser.orgId;
@@ -181,18 +177,29 @@ export default {
         orgId: org_id,
         documentUrl: this.documentUrl,
         documentName: this.documentName,
-        documentDescription: this.documentDescription
+        documentDescription: this.documentDescription,
       };
       axios
         .post(
-          `${this.$store.state.base_url}/organization/document/${org_id}/add`, data,
+          `${this.$store.state.base_url}/organization/document/${org_id}/add`,
+          data,
           config
         )
-        .then((response) => {
-          this.createLoading = false;
-          this.getDocuments();
-          this.addNewDocDialog = false;
-        });
+        .then(
+          (response) => {
+            this.createLoading = false;
+            this.getDocuments();
+            this.addNewDocDialog = false;
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Document created successfully",
+            });
+          },
+          (error) => {
+            this.createLoading = false;
+          }
+        );
     },
   },
 };

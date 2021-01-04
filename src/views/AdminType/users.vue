@@ -34,7 +34,13 @@
             >
               Deactivate
             </v-btn>
-            <v-btn style="margin-left: 10px;" small depressed color="primary" @click="getAddresses(item)">
+            <v-btn
+              style="margin-left: 10px;"
+              small
+              depressed
+              color="primary"
+              @click="getAddresses(item)"
+            >
               Show Address
             </v-btn>
           </template>
@@ -191,6 +197,11 @@ export default {
         .then((response) => {
           this.loading = false;
           this.getUsers();
+          this.$message({
+            type: "success",
+            showClose: true,
+            message: "User activated successfully",
+          });
         });
     },
     deactivateUser(user) {
@@ -210,6 +221,11 @@ export default {
         .then((response) => {
           this.loading = false;
           this.getUsers();
+          this.$message({
+            type: "success",
+            showClose: true,
+            message: "User deactivated successfully",
+          });
         });
     },
   },

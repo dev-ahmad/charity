@@ -1,5 +1,5 @@
 <template>
-  <div v-if="organization != null" :loading="loading">
+  <div v-if="organization != null" v-loading="loading">
     <div
       class="contact-cont"
       style='background-image: url("https://www.globalgiving.org/img/banners/hero_aboutus_lg.jpg");'
@@ -469,14 +469,17 @@ export default {
         password: this.password,
       };
 
-      axios
-        .post(`${this.$store.state.base_url}/user/login`, data)
-        .then((response) => {
+      axios.post(`${this.$store.state.base_url}/user/login`, data).then(
+        (response) => {
           this.$store.commit("crrentUserDonate", response.data);
           this.loginLoading = false;
           this.loginDialog = false;
           this.donateDialog = true;
-        });
+        },
+        (error) => {
+          this.loginLoading = false;
+        }
+      );
     },
     donateUser() {
       this.loading = true;

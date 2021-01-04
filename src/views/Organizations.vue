@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div
       class="contact-cont"
       style='background-image: url("https://www.globalgiving.org/img/banners/hero_aboutus_lg.jpg");'
@@ -112,6 +112,7 @@ export default {
       clothes: false,
       money: false,
       food: false,
+      loading: false,
     };
   },
   mounted() {
@@ -120,11 +121,12 @@ export default {
   methods: {
     filterMenu() {},
     getOrganizations() {
+      this.loading = true;
       this.$http
         .get(`${this.$store.state.base_url}/organization/home/all`)
         .then((response) => {
           this.organizations = response.body;
-          console.warn(response.body);
+          this.loading = false;
         })
         .finally(() => {
           this.loading = false;

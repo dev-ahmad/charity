@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div
       class="about-us-header"
       style='background-image: url("https://www.globalgiving.org/img/banners/hero_aboutus_lg.jpg");'
@@ -33,7 +33,8 @@
 export default {
   data() {
     return {
-      aboutUs: ""
+      loading: false,
+      aboutUs: "",
     };
   },
   mounted() {
@@ -41,10 +42,13 @@ export default {
   },
   methods: {
     getAboutUs() {
+      this.loading = true;
+
       this.$http
         .get(`${this.$store.state.base_url}/page/ABOUT`)
         .then((response) => {
           this.aboutUs = response.data.content;
+          this.loading = false;
         })
         .finally(() => {
           this.loading = false;

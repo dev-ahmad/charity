@@ -243,14 +243,22 @@ export default {
         country: this.countryId,
         note: this.note,
       };
-      this.$http
-        .post("${this.$store.state.base_url}/user/address", data, config)
-        .then((response) => {
-          this.updateLoading = false;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+
+      axios
+        .post(`${this.$store.state.base_url}/user/address`, data, config)
+        .then(
+          (response) => {
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Address updated successfully",
+            });
+            this.updateLoading = false;
+          },
+          (error) => {
+            this.updateLoading = false;
+          }
+        );
     },
   },
 };

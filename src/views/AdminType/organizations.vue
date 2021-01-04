@@ -211,12 +211,15 @@ export default {
           Authorization: "Bearer " + this.$store.state.crrentUser.token,
         },
       };
-      axios
-        .get(`${this.$store.state.base_url}/organization/all`, config)
-        .then((response) => {
+      axios.get(`${this.$store.state.base_url}/organization/all`, config).then(
+        (response) => {
           this.loading = false;
           this.donations = response.data;
-        });
+        },
+        (error) => {
+          this.loading = false;
+        }
+      );
     },
     activateOrg(org) {
       this.loading = true;
@@ -232,10 +235,20 @@ export default {
           data,
           config
         )
-        .then((response) => {
-          this.loading = false;
-          this.getOrganizations();
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.getOrganizations();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Organization activated successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     deactivateOrg(org) {
       this.loading = true;
@@ -251,10 +264,20 @@ export default {
           data,
           config
         )
-        .then((response) => {
-          this.loading = false;
-          this.getOrganizations();
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.getOrganizations();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Organization deactivated successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     verifyOrg(org) {
       this.loading = true;
@@ -270,10 +293,20 @@ export default {
           data,
           config
         )
-        .then((response) => {
-          this.loading = false;
-          this.getOrganizations();
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.getOrganizations();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Organization verified successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     unverifyOrg(org) {
       this.loading = true;
@@ -289,10 +322,20 @@ export default {
           data,
           config
         )
-        .then((response) => {
-          this.loading = false;
-          this.getOrganizations();
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.getOrganizations();
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Organization unverified successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     verifyDocument(doc) {
       this.loading = true;
@@ -308,10 +351,20 @@ export default {
           data,
           config
         )
-        .then((response) => {
-          this.loading = false;
-          this.showDocuments(this.selectedOrg);
-        });
+        .then(
+          (response) => {
+            this.loading = false;
+            this.showDocuments(this.selectedOrg);
+            this.$message({
+              type: "success",
+              showClose: true,
+              message: "Document verified successfully",
+            });
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
     showDocuments(org) {
       this.selectedOrg = org.id;
@@ -329,10 +382,15 @@ export default {
           `${this.$store.state.base_url}/organization/document/${org.id}/all`,
           config
         )
-        .then((response) => {
-          this.documentLoading = false;
-          this.documents = response.data;
-        });
+        .then(
+          (response) => {
+            this.documentLoading = false;
+            this.documents = response.data;
+          },
+          (error) => {
+            this.loading = false;
+          }
+        );
     },
   },
 };
